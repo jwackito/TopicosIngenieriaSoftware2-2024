@@ -1,0 +1,2666 @@
+@prefix : <https://raw.githubusercontent.com/fdioguardi/pronto/main/ontology/pronto.owl#> .
+@prefix core: <https://w3id.org/rec/core/> .
+@prefix cpannotationschema: <http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix ns: <http://creativecommons.org/ns#> .
+@prefix ns1: <https://raw.githubusercontent.com/jwackito/csv2pronto/main/ontology/pronto.owl#> .
+@prefix ns2: <http://rdfs.org/sioc/ns#> .
+@prefix o2o: <https://karlhammar.com/owl2oas/o2o.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix v1: <http://purl.org/goodrelations/v1#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns:license a owl:AnnotationProperty .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:date a owl:DatatypeProperty ;
+    rdfs:label "date"@en ;
+    rdfs:range xsd:dateTime .
+
+dc:description a owl:AnnotationProperty .
+
+dc:publisher a owl:AnnotationProperty .
+
+dc:rights a owl:AnnotationProperty .
+
+dc:subject a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+dcterms:license a owl:AnnotationProperty .
+
+dcterms:modified a owl:AnnotationProperty .
+
+dcterms:title a owl:DatatypeProperty ;
+    rdfs:label "title"@en .
+
+v1:Business rdfs:label "Business (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are themselves offering commercial services or products on the market. Usually, businesses are characterized by the fact that they are officially registered with the public administration and strive for profits by their activities."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:Enduser rdfs:label "Enduser (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are purchasing the good or service for private consumption, in particular not for resale or for usage within an industrial enterprise. By default, a Business Entity is an Enduser."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:LeaseOut a v1:BusinessFunction,
+        owl:NamedIndividual ;
+    rdfs:label "Lease Out (business function)"@en ;
+    rdfs:comment "This gr:BusinessFunction indicates that the gr:BusinessEntity offers (or seeks) the temporary right to use the specified gr:ProductOrService."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:PublicInstitution rdfs:label "Public institution (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are part of the adminstration or owned by the public."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:Reseller rdfs:label "Reseller (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are purchasing the scope of products included in the gr:Offering for resale on the market. Resellers are also businesses, i.e., they are officially registered with the public administration and strive for profits by their activities."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:condition a owl:DatatypeProperty ;
+    rdfs:label "condition (0..1)"@en ;
+    rdfs:comment "A textual description of the condition of the product or service, or the products or services included in the offer (when attached to a gr:Offering)"@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range rdfs:Literal .
+
+v1:description a owl:DatatypeProperty ;
+    rdfs:label "description (0..1)"@en ;
+    rdfs:comment """A short textual description of the resource. 
+
+This property is semantically equivalent to rdfs:comment and just meant as a handy shortcut for marking up data."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range rdfs:Literal .
+
+v1:hasBusinessFunction a owl:ObjectProperty ;
+    rdfs:label "has business function (1..*)"@en ;
+    rdfs:comment """This specifies the business function of the gr:Offering, i.e. whether the gr:BusinessEntity is offering to sell, to lease, or to repair the particular type of product. In the case of bundles, it is also possible to attach individual business functions to each gr:TypeAndQuantityNode. The business function of the main gr:Offering determines the business function for all included objects or services, unless a business function attached to a gr:TypeAndQuantityNode overrides it.
+	
+Note: While it is possible that an entity is offering multiple types of business functions for the same set of objects (e.g. rental and sales), this should usually not be stated by attaching multiple business functions to the same gr:Offering, since the gr:UnitPriceSpecification for the varying business functions will typically be very different."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range v1:BusinessFunction .
+
+v1:hasCurrency a owl:DatatypeProperty ;
+    rdfs:label "has currency (1..1)"@en ;
+    rdfs:comment "The currency for all prices in the gr:PriceSpecification given using the ISO 4217 standard (3 characters)."@en ;
+    rdfs:domain v1:PriceSpecification ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+v1:hasPriceSpecification a owl:ObjectProperty ;
+    rdfs:label "has price specification (0..*)"@en ;
+    rdfs:comment """This links a gr:Offering to a gr:PriceSpecification or specifications. There can be unit price specifications, payment charge specifications, and delivery charge specifications. For each type, multiple specifications for the same gr:Offering are possible, e.g. for different quantity ranges or for different currencies, or for different combinations of gr:DeliveryMethod and target destinations.
+
+Recommended retail prices etc. can be marked by the gr:priceType property of the gr:UnitPriceSpecification."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range v1:PriceSpecification .
+
+v1:hasUnitOfMeasurement a owl:DatatypeProperty ;
+    rdfs:label "has unit of measurement (1..1)"@en ;
+    rdfs:comment "The unit of measurement for a gr:QuantitativeValue, a gr:UnitPriceSpecification, or a gr:TypeAndQuantityNode given using the UN/CEFACT Common Code (3 characters)."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+v1:hasValue a owl:DatatypeProperty ;
+    rdfs:label "has value (0..1)"@en ;
+    rdfs:comment "This subproperty specifies that the upper and lower limit of the given gr:QuantitativeValue are identical and have the respective value. It is a shortcut for such cases where a quantitative property is (at least practically) a single point value and not an interval."@en ;
+    rdfs:domain v1:QuantitativeValue ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:float ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+v1:priceType a owl:DatatypeProperty ;
+    rdfs:label "price type (0..1)"@en ;
+    rdfs:comment """This attribute can be used to distinguish multiple different price specifications for the same gr:Offering. It supersedes the former gr:isListPrice property. The following values are recommended:
+
+The absence of this property marks the actual sales price.
+
+SRP: "suggested retail price" - applicable for all sorts of a non-binding retail price recommendations, e.g. such published by the manufacturer or the distributor. This value replaces the former gr:isListPrice property.
+
+INVOICE: The invoice price, mostly used in the car industry - this is the price a dealer pays to the manufacturer, excluding rebates and charges."""@en ;
+    rdfs:domain v1:UnitPriceSpecification ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+<http://purl.org/rss/1.0/modules/content/encoded> a owl:DatatypeProperty ;
+    rdfs:label "encoded"@en ;
+    rdfs:comment """An element whose contents are the entity-encoded or CDATA-escaped version of the content of the item. Example:
+
+<content:encoded><![CDATA[<p>What a <em>beautiful</em> day!</p>]]></content:encoded>"""@en ;
+    rdfs:range xsd:string .
+
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+ns2:Container a owl:Class ;
+    rdfs:label "Container"@en ;
+    rdfs:comment "An area in which content Items are contained."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:Item,
+        ns2:UserAccount .
+
+ns2:Site a owl:Class ;
+    rdfs:label "Site"@en ;
+    rdfs:comment "A Site can be the location of an online community or set of communities, with UserAccounts and Usergroups creating Items in a set of Containers. It can be thought of as a web-accessible data Space."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf ns2:Space .
+
+ns2:about a owl:ObjectProperty ;
+    rdfs:label "about"@en ;
+    rdfs:comment "Specifies that this Item is about a particular resource, e.g. a Post describing a book, hotel, etc."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:account_of a owl:ObjectProperty ;
+    rdfs:label "account of"@en ;
+    rdfs:comment "Refers to the foaf:Agent or foaf:Person who owns this sioc:UserAccount."@en ;
+    rdfs:domain ns2:UserAccount ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range foaf:Agent ;
+    owl:inverseOf foaf:account .
+
+ns2:content a owl:DatatypeProperty ;
+    rdfs:label "content"@en ;
+    rdfs:comment "The content of the Item in plain text format."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:creator_of a owl:ObjectProperty ;
+    rdfs:label "creator of"@en ;
+    rdfs:comment "A resource that the UserAccount is a creator of."@en ;
+    rdfs:domain ns2:UserAccount ;
+    rdfs:isDefinedBy ns2: ;
+    owl:inverseOf ns2:has_creator .
+
+ns2:embeds_knowledge a owl:ObjectProperty ;
+    rdfs:label "embeds knowledge"@en ;
+    rdfs:comment "This links Items to embedded statements, facts and structured content."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:id a owl:DatatypeProperty ;
+    rdfs:label "id"@en ;
+    rdfs:comment "An identifier of a SIOC concept instance. For example, a user ID. Must be unique for instances of each type of SIOC concept within the same site."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:link a owl:ObjectProperty ;
+    rdfs:label "link"@en ;
+    rdfs:comment "A URI of a document which contains this SIOC object."@en ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:name a owl:DatatypeProperty ;
+    rdfs:label "name"@en ;
+    rdfs:comment "The name of a SIOC concept instance, e.g. a username for a UserAccount, group name for a Usergroup, etc."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:read_at a owl:DatatypeProperty ;
+    rdfs:label "read at"@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range xsd:dateTime .
+
+ns2:related_to a owl:ObjectProperty ;
+    rdfs:label "related to"@en ;
+    rdfs:comment "Related resources for this resource, e.g. for Posts, perhaps determined implicitly from topics or references."@en ;
+    rdfs:isDefinedBy ns2: .
+
+<http://schema.org/Place> a owl:Class ;
+    rdfs:label "Place"@en .
+
+<http://schema.org/seller> a owl:ObjectProperty ;
+    rdfs:label "seller"@en ;
+    rdfs:comment "An entity which offers (sells / leases / lends / loans) the services / goods. A seller may also be a provider."@en ;
+    rdfs:range foaf:Agent .
+
+cpannotationschema:coversRequirements a owl:AnnotationProperty .
+
+owl:deprecated a owl:AnnotationProperty .
+
+foaf:homepage a owl:AnnotationProperty .
+
+foaf:made a owl:ObjectProperty ;
+    rdfs:label "made"@en ;
+    rdfs:comment "Something that was made by this agent."@en ;
+    rdfs:domain foaf:Agent ;
+    owl:inverseOf foaf:maker .
+
+o2o:endpoint a owl:AnnotationProperty .
+
+o2o:included a owl:AnnotationProperty .
+
+<https://raw.githubusercontent.com/fdioguardi/pronto/main/ontology/pronto.owl> a owl:Ontology ;
+    rdfs:label "Property Ontology"@en ;
+    ns:license <https://opensource.org/licenses/MIT> ;
+    dc:contributor "Diego Torres"^^xsd:string ;
+    dc:creator "Felipe Dioguardi"^^xsd:string ;
+    dc:description """This ontology covers multiple types of properties and buildings on the real estate market, and real estate listings from different sites that advertise them.
+
+It is mainly based on the RealEstateCore and Semantically-Interlinked Online Communities ontologies."""@en ;
+    dc:publisher "LIFIA"@en ;
+    vann:preferredNamespacePrefix "pr"@en ;
+    rdfs:comment "Pronto is a work-in-progress; requirements are rather unclear as of yet."@en ;
+    rdfs:seeAlso <http://rdfs.org/sioc/>,
+        <http://rdfs.org/sioc/spec>,
+        <http://sioc-project.org>,
+        <http://www.heppnetz.de/ontologies/goodrelations/v1>,
+        <https://realestatecore.io>,
+        <https://w3id.org/rec/>,
+        <https://xmlns.com/foaf/spec/> .
+
+:RealEstateListing a owl:Class ;
+    rdfs:label "Real Estate Listing"@en ;
+    rdfs:comment "A public advertisement of some real estate."@en ;
+    rdfs:subClassOf v1:Offering,
+        ns2:Post .
+
+:disposition a owl:DatatypeProperty ;
+    rdfs:label "disposition"@en ;
+    rdfs:comment "Cardinal point in which the property is facing."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:has_feature a owl:ObjectProperty ;
+    rdfs:domain core:Space ;
+    rdfs:range :Feature .
+
+:has_number_of_rooms a owl:DatatypeProperty ;
+    rdfs:label "has number of rooms"@en ;
+    rdfs:range xsd:int .
+
+:has_size_specification a owl:ObjectProperty ;
+    rdfs:label "has size specification (0..*)"@en ;
+    rdfs:comment """This links a rec:Space to a pr:SizeSpecification or specifications. Multiple specifications for the same rec:Space are possible, e.g. for different surfaces measured or for different units.
+
+The specific surface measured can be marked by the gr:sizeType property of the pr:SizeSpecification."""@en ;
+    rdfs:domain core:Space ;
+    rdfs:range :SizeSpecification .
+
+:has_value a owl:DatatypeProperty ;
+    rdfs:label "has value"@en ;
+    rdfs:domain :Feature ;
+    rdfs:range rdfs:Literal .
+
+:is_brand_new a owl:DatatypeProperty ;
+    rdfs:label "is brand new"@en ;
+    rdfs:comment "Whether the Building or Land has been inhabited before."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:is_finished a owl:DatatypeProperty ;
+    rdfs:label "is finished"@en ;
+    rdfs:comment "Whether the building process has been completed"@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:luminosity a owl:DatatypeProperty ;
+    rdfs:label "luminosity"@en ;
+    rdfs:comment "The brightness or luminosity of the property."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:orientation a owl:DatatypeProperty ;
+    rdfs:label "orientation"@en ;
+    rdfs:comment "Where the property is facing."@en ;
+    rdfs:domain core:Space ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:property_type a owl:DatatypeProperty ;
+    rdfs:label "property type"@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string .
+
+:size_type a owl:DatatypeProperty ;
+    rdfs:label "size type (0..1)"@en ;
+    rdfs:comment "The type of surface measured by a SizeSpecification, e.g. \"Covered\", \"Total\"."@en ;
+    rdfs:domain :SizeSpecification ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+schema:address a owl:DatatypeProperty ;
+    rdfs:label "address"@en ;
+    rdfs:comment "Physical address of the item."@en ;
+    rdfs:domain core:Space .
+
+schema:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude"@en ;
+    rdfs:comment "The latitude of a location. For example 37.42242 (WGS 84)."@en ;
+    rdfs:range xsd:double ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+schema:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude"@en ;
+    rdfs:comment "The longitude of a location. For example -122.08585 (WGS 84)."@en ;
+    rdfs:range xsd:double ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+<https://w3id.org/rec/building/Toilet> a owl:Class ;
+    rdfs:subClassOf <https://w3id.org/rec/building/PersonalHygiene> .
+
+core:Land a owl:Class ;
+    rdfs:label "Land"@en ;
+    rdfs:comment "A piece of land upon which one or more buildings may be situated."@en ;
+    rdfs:subClassOf core:Space .
+
+core:SubBuilding a owl:Class ;
+    rdfs:label "Sub-building"@en ;
+    rdfs:comment "A part of a larger building complex, e.g., a wing, a tower, or an interconnected (through walkways or other means) but largely free-standing building."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:oneOf [ a rdf:List ;
+                            rdf:first "Tower" ;
+                            rdf:rest [ a rdf:List ;
+                                    rdf:first "Wing" ;
+                                    rdf:rest () ] ] ] ;
+            owl:onProperty core:type ],
+        core:Space .
+
+core:documentTopic a owl:ObjectProperty ;
+    rdfs:label "document topic"@en ;
+    rdfs:domain core:Document ;
+    owl:inverseOf core:hasDocument .
+
+core:hasCity a owl:DatatypeProperty ;
+    rdfs:label "has city"@en ;
+    rdfs:comment "Indicates a city that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasCountry a owl:DatatypeProperty ;
+    rdfs:label "has country"@en ;
+    rdfs:comment "Indicates a country that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasGeonamesId a owl:DatatypeProperty ;
+    rdfs:label "has geonames ID"@en ;
+    rdfs:comment """Linking to https://www.geonames.org
+
+E.g. for Stockholm (Sweden):
+LocationUUID#1 hasGenonames http://www.geonames.org/2673730/stockholm.html"""@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasPostalAddress a owl:DatatypeProperty ;
+    rdfs:label "has postal address"@en ;
+    rdfs:comment "Address used for postal delivery."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasRegion a owl:DatatypeProperty ;
+    rdfs:label "has region"@en ;
+    rdfs:comment "Indicates a region that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasVistingAddress a owl:DatatypeProperty ;
+    rdfs:label "has visting address"@en ;
+    rdfs:comment "An address for visiting the Geometry. If a Geometry has multiple visiting addresses, then just add as many hasVistingAddress as needed."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasZipCode a owl:DatatypeProperty ;
+    rdfs:label "has zip code"@en ;
+    rdfs:comment "Indicates a certain Geometry's zip code."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:isLocatedAtLocalCoordinates a owl:DatatypeProperty ;
+    rdfs:label "is located at local coordinates"@en ;
+    rdfs:comment "Expressed as a string adhering to the notation \"(x,y,z)\", where x, y, and z ar whole or decimal numbers indicating the position in the local building coordinate system, measured in meters. This relates to the outside world coordinate refence system via the values expressed by GeoReferenceOrigo."@en ;
+    rdfs:subPropertyOf geo:hasSerialization .
+
+core:isLocationOf a owl:ObjectProperty ;
+    rdfs:label "is location of"@en ;
+    rdfs:domain core:Space ;
+    owl:inverseOf core:locatedIn .
+
+v1:Sell a v1:BusinessFunction,
+        owl:NamedIndividual ;
+    rdfs:label "Sell (business function)"@en ;
+    rdfs:comment "This gr:BusinessFunction indicates that the gr:BusinessEntity offers to permanently transfer all property rights on the specified gr:ProductOrService."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+ns2:Post a owl:Class ;
+    rdfs:label "Post"@en ;
+    rdfs:comment "An article or message that can be posted to a Forum."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf ns2:Item,
+        foaf:Document .
+
+ns2:has_creator a owl:ObjectProperty ;
+    rdfs:label "has creator"@en ;
+    rdfs:comment "A resource that the UserAccount is a creator of."@en ;
+    rdfs:isDefinedBy ns2: .
+
+<http://rdfs.org/sioc/spec> rdfs:label "SIOC Core Ontology Specification" .
+
+foaf:Document a owl:Class .
+
+foaf:OnlineAccount a owl:Class ;
+    rdfs:label "OnlineAccount"@en .
+
+foaf:account a owl:ObjectProperty ;
+    rdfs:label "account"@en .
+
+foaf:maker a owl:ObjectProperty ;
+    rdfs:label "maker"@en ;
+    rdfs:comment "An agent that made this thing."@en ;
+    rdfs:range foaf:Agent .
+
+ns1:feature_Cantidad%20pisos%20en%20edificio_5 a ns1:Feature ;
+    rdfs:label "Cantidad pisos en edificio: 5"^^xsd:string ;
+    dc:title "Cantidad pisos en edificio"^^xsd:string ;
+    ns1:has_value "5"^^xsd:string .
+
+ns1:neibourhood_GBA%20Norte_Tigre_Nordelta a core:Region ;
+    rdfs:label "Nordelta"^^xsd:string ;
+    core:locatedIn ns1:district_GBA%20Norte_Tigre,
+        ns1:province_GBA%20Norte .
+
+ns1:site3 ns2:space_of ns1:listing_site3_52631481 .
+
+ns1:space_site3_52631481 a core:Space ;
+    ns1:disposition "Frente"^^xsd:string ;
+    ns1:hasSizeSpecification [ a ns1:SizeSpecification ;
+            v1:hasUnitOfMeasurement "m²"^^xsd:string ;
+            v1:hasValue "118.0"^^xsd:float ;
+            ns1:size_type "covered"^^xsd:string ],
+        [ a ns1:SizeSpecification ;
+            v1:hasUnitOfMeasurement "m²"^^xsd:string ;
+            v1:hasValue "118.0"^^xsd:float ;
+            ns1:size_type "total"^^xsd:string ] ;
+    ns1:has_amount_of_rooms 3 ;
+    ns1:has_feature ns1:feature_Cantidad%20pisos%20en%20edificio_5 ;
+    ns1:orientation "N"^^xsd:string ;
+    ns1:property_type "Departamento"^^xsd:string ;
+    schema:address "Oceana Nordelta 100"^^xsd:string ;
+    schema:latitude -3.442541e+01 ;
+    schema:longitude -5.863081e+01 ;
+    core:hasPart ns1:space_site3_52631481_bath_0,
+        ns1:space_site3_52631481_bath_1,
+        ns1:space_site3_52631481_bed_0,
+        ns1:space_site3_52631481_bed_1,
+        ns1:space_site3_52631481_garage_0 ;
+    core:locatedIn ns1:district_GBA%20Norte_Tigre,
+        ns1:neibourhood_GBA%20Norte_Tigre_Nordelta,
+        ns1:province_GBA%20Norte .
+
+ns1:space_site3_52631481_bath_0 a <https://w3id.org/rec/building/Bathroom> .
+
+ns1:space_site3_52631481_bath_1 a <https://w3id.org/rec/building/Bathroom> .
+
+ns1:space_site3_52631481_bed_0 a <https://w3id.org/rec/building/Bedroom> .
+
+ns1:space_site3_52631481_bed_1 a <https://w3id.org/rec/building/Bedroom> .
+
+ns1:space_site3_52631481_garage_0 a <https://w3id.org/rec/building/Garage> .
+
+<https://w3id.org/rec/building/Garage> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+<https://w3id.org/rec/building/PersonalHygiene> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+core:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "The human, group, or machine that consumes or acts upon an object or data. This higher-level grouping allows properties that are shared among its subclasses (Person, Organization, Company, Department...) to be anchored in one joint place, on the Agent class."@en ;
+    o2o:endpoint "agent" ;
+    o2o:included true .
+
+core:RealEstate a owl:Class ;
+    rdfs:label "Real estate"@en ;
+    rdfs:comment "The legal/administrative representation of some lands and/or buildings."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty core:includes ;
+            owl:someValuesFrom core:Space ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:includes ],
+        core:SpaceCollection ;
+    o2o:endpoint "realestate" ;
+    o2o:included true .
+
+core:SpaceCollection a owl:Class ;
+    rdfs:label "Space collection"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:includes ],
+        [ a owl:Restriction ;
+            owl:onProperty core:includes ;
+            owl:someValuesFrom core:Space ],
+        core:Collection .
+
+core:componentOf a owl:ObjectProperty ;
+    rdfs:label "component of"@en ;
+    rdfs:comment "Links a Building Component to a Space, that the Building Component is either contained in, adjacent to or intersecting with."@en ;
+    rdfs:domain core:BuildingComponent ;
+    rdfs:range core:Space ;
+    owl:inverseOf core:hasBuildingComponent .
+
+core:hasBuildingComponent a owl:ObjectProperty ;
+    rdfs:label "has building component"@en ;
+    rdfs:comment "Links a Space to a BuildingComponent that is either contained in, adjacent to or intersecting with the Space."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range core:BuildingComponent .
+
+core:locatedIn a owl:ObjectProperty ;
+    rdfs:label "located in"@en ;
+    rdfs:range core:Space .
+
+core:type a owl:DatatypeProperty ;
+    rdfs:label "type"@en ;
+    rdfs:range xsd:string .
+
+v1:QuantitativeValue a owl:Class ;
+    rdfs:label "Quantitative value"@en ;
+    rdfs:comment """A quantitative value is a numerical interval that represents the range of a certain gr:quantitativeProductOrServiceProperty in terms of the lower and upper bounds for a particular gr:ProductOrService. It is to be interpreted in combination with the respective unit of measurement. Most quantitative values are intervals even if they are in practice often treated as a single point value.
+
+Example: a weight between 10 and 25 kilogramms, a length between 10 and 15 milimeters.
+
+Compatibility with schema.org: This class is equivalent to http://schema.org/Quantity."""@en .
+
+v1:UnitPriceSpecification a owl:Class ;
+    rdfs:label "Unit price specification"@en ;
+    rdfs:comment """A unit price specification is a conceptual entity that specifies the price asked for a given gr:Offering by the respective gr:Business Entity. An offering may be linked to multiple unit price specifications that specify alternative prices for non-overlapping sets of conditions (e.g. quantities or sales regions) or with differing validity periods. 
+
+A unit price specification is characterized by (1) the lower and upper limits and the unit of measurement of the eligible quantity, (2) by a monetary amount per unit of the product or service, and (3)  whether this prices includes local sales taxes, namely VAT.
+	
+Example: The price, including VAT, for 1 kg of a given material is 5 Euros per kg for 0 - 5 kg and 4 Euros for quantities above 5 kg.
+
+The eligible quantity interval for a given price is specified using the object property gr:hasEligibleQuantity, which points to an instance of gr:QuantitativeValue. The currency is specified using the gr:hasCurrency property, which points to an ISO 4217 currency code. The unit of measurement for the eligible quantity is specified using the gr:hasUnitOfMeasurement datatype property, which points to an UN/CEFACT Common Code (3 characters).
+	
+In most cases, the appropriate unit of measurement is the UN/CEFACT Common Code "C62" for "Unit or piece", since a gr:Offering is defined by the quantity and unit of measurement of all items included (e.g. "1 kg of bananas plus a 2 kg of apples"). As long at the offering consists of only one item, it is also possible to use an unit of measurement of choice for specifying the price per unit. For bundles, however, only  "C62" for "Unit or piece" is a valid unit of measurement.
+
+You can assume that the price is given per unit or piece if there is no gr:hasUnitOfMeasurement property attached to the price.
+	
+Whether VAT and sales taxes are included in this price is specified using the property gr:valueAddedTaxIncluded (xsd:boolean).
+	
+The price per unit of measurement is specified as a float value of the gr:hasCurrencyValue property. The currency is specified via the gr:hasCurrency datatype property. Whether the price includes VAT or not is indicated by the gr:valueAddedTaxIncluded datatype property.
+
+The property priceType can be used to indicate that the price is a retail price recommendation only (i.e. a list price). 
+
+If the price can only be given as a range, use gr:hasMaxCurrencyValue and gr:hasMinCurrencyValue for the upper and lower bounds.
+
+Important: When querying for the price, always use gr:hasMaxCurrencyValue and gr:hasMinCurrencyValue.
+
+Note 1: Due to the complexity of pricing scenarios in various industries, it may be necessary to create extensions of this fundamental model of price specifications. Such can be done easily by importing and refining the GoodRelations ontology.
+
+Note 2: For Google, attaching a gr:validThrough statement to a gr:UnitPriceSpecification is mandatory. 
+"""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:subClassOf v1:PriceSpecification .
+
+ns2:Space a owl:Class ;
+    rdfs:label "Space"@en ;
+    rdfs:comment "A Space is a place where data resides, e.g. on a website, desktop, fileshare, etc."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:UserAccount .
+
+geo:hasSerialization a owl:DatatypeProperty ;
+    rdfs:label "has serialization"@en ;
+    rdfs:comment """Connects a geometry object with its text-based serialization.
+
+GeoSPARQL is Copyright (c) 2012 Open Geospatial Consortium, Inc. All Rights Reserved. http://www.opengeospatial.org/ogc/document."""@en ;
+    rdfs:isDefinedBy geo: ;
+    rdfs:range rdfs:Literal .
+
+:Feature a owl:Class ;
+    rdfs:label "Feature"@en .
+
+:SizeSpecification a owl:Class ;
+    rdfs:label "Size specification"@en ;
+    rdfs:comment "A unit price specification is a conceptual entity that specifies the size of a given rec:Space. A space may be linked to multiple size specifications that specify alternative sizes for different types of measurements (e.g. total or covered surface)."@en ;
+    rdfs:subClassOf v1:QuantitativeValue .
+
+ns1:account_site3_30408458 a ns2:UserAccount ;
+    ns2:account_of ns1:agent_Grupo%20Inmobiliario%20Olhaus ;
+    ns2:creator_of ns1:listing_site3_52631481 ;
+    ns2:id "30408458"^^xsd:string ;
+    ns2:name "Grupo Inmobiliario Olhaus"^^xsd:string .
+
+ns1:district_GBA%20Norte_Tigre a core:Region ;
+    rdfs:label "Tigre"^^xsd:string ;
+    core:locatedIn ns1:province_GBA%20Norte .
+
+ns1:real_estate_site3_52631481 a core:RealEstate ;
+    ns1:managed_by ns1:agent_Grupo%20Inmobiliario%20Olhaus ;
+    core:includes ns1:space_site3_52631481 .
+
+<https://w3id.org/rec/building/Bathroom> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+<https://w3id.org/rec/building/Bedroom> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+core:componentOfBuilding a owl:ObjectProperty ;
+    rdfs:label "component of building"@en ;
+    rdfs:comment "Indicates which Building a certain Building Component is part of."@en ;
+    rdfs:domain core:BuildingComponent ;
+    rdfs:range core:Building ;
+    rdfs:subPropertyOf core:componentOf .
+
+core:hasPart a owl:ObjectProperty ;
+    rdfs:label "has part"@en ;
+    rdfs:comment "Points to sub-entities that share the same base type (i.e., Spaces only have Spaces as parts, Assets only have Assets as parts, etc.)."@en ;
+    owl:inverseOf core:isPartOf .
+
+v1:BusinessFunction a owl:Class ;
+    rdfs:label "Business function"@en ;
+    rdfs:comment """The business function specifies the type of activity or access (i.e., the bundle of rights) offered by the gr:BusinessEntity on the gr:ProductOrService through the gr:Offering. Typical are sell, rental or lease, maintenance or repair, manufacture / produce, recycle / dispose, engineering / construction, or installation.
+
+Licenses and other proprietary specifications of access rights are also instances of this class.
+
+Examples: A particular offering made by Miller Rentals Ltd. says that they (1) sell Volkswagen Golf convertibles, (2) lease out a particular Ford pick-up truck, and (3) dispose car wrecks of any make and model."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    owl:disjointWith v1:Offering,
+        v1:PriceSpecification .
+
+v1:Offering a owl:Class ;
+    rdfs:label "Offering"@en ;
+    rdfs:comment """An offering represents the public, not necessarily binding, not necessarily exclusive, announcement by a gr:BusinessEntity to provide (or seek) a certain gr:BusinessFunction for a certain gr:ProductOrService to a specified target audience. An offering is specified by the type of product or service or bundle it refers to, what business function is being offered (sales, rental, ...), and a set of commercial properties. It can either refer to 
+(1) a clearly specified instance (gr:Individual),
+(2) to a set of anonymous instances of a given type (gr:SomeItems),
+(3) a product model specification (gr:ProductOrServiceModel), see also section 3.3.3 of the GoodRelations Technical Report. 
+
+An offering may be constrained in terms of the eligible type of business partner, countries, quantities, and other commercial properties. The definition of the commercial properties, the type of product offered, and the business function are explained in other parts of this vocabulary in more detail.
+
+Example: Peter Miller offers to repair TV sets made by Siemens, Volkswagen Innsbruck sells a particular instance of a Volkswagen Golf at $10,000.
+
+Compatibility with schema.org: This class is a superclass to http://schema.org/Offer, since gr:Offering can also represent demand."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    owl:disjointWith v1:PriceSpecification .
+
+ns1:agent_Grupo%20Inmobiliario%20Olhaus a foaf:Agent ;
+    foaf:account ns1:account_site3_30408458 ;
+    foaf:made ns1:listing_site3_52631481 ;
+    ns1:manages ns1:real_estate_site3_52631481 .
+
+ns1:listing_site3_52631481 a ns1:RealEstateListing ;
+    rdfs:label """
+Departamento en Venta Ubicado en Tigre, G. B. a. Zona Norte
+"""^^xsd:string ;
+    dc:date "2023-11-10T00:00:00"^^xsd:dateTime ;
+    v1:hasBuisnessFunction v1:Sell ;
+    v1:hasPriceSpecification [ a v1:UnitPriceSpecification ;
+            v1:hasCurrency "USD"^^xsd:string ;
+            v1:hasCurrencyValue "667586.0"^^xsd:float ;
+            v1:priceType "BASE"^^xsd:string ] ;
+    ns2:about ns1:real_estate_site3_52631481 ;
+    ns2:has_creator ns1:account_site3_30408458 ;
+    ns2:has_space ns1:site3 ;
+    ns2:id "52631481"^^xsd:string ;
+    ns2:read_at "2024-02-02T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "EL VALOR PUBLICADO ES EN DOLARES Oceana Nordelta, unidad de 3 ambientes, en el 5to piso C508 donde encontramos living comedor, master suite, suite jr, toilette, doble balcón con parrilla, cochera y baulera Lugares de estar apaisados, con doble visual: sol de la mañana y atardecer sobre el lago. Equipamiento y muebles de diseño contemporáneo. Tecnología y bajo consumo. Materiales solo de primera calidad. Dormitorios que guardan clara independencia entre ellos y respecto de las áreas sociales. Ambientes que respiran, ventilación cruzada. Espacios que se continúan en terrazas exteriores. Patios abiertos con parrillas hacia el este anexos a las cocinas. Galerías sobre el jardín y el lago. Una idea de confort que se extiende más allá del propio hábitat. FECHA DE ENTREGA FEBRERO 2025. Donde esta ubicado Oceana? En el cruce exacto entre paisajes. A orillas del gran lago central con una perfecta armonía entre naturaleza y paisaje hacen de esta belleza un lugar para vivir. Muelle privado y mirador hacia la laguna, salas de reuniones independientes en planta baja, pileta climatizada cubierta, gimnasio con aparatos de ultima generación, salón de relax, yoga y spa. Lounges y salas de ensayo, piletas y solarium exterior, senderos peatonales rodeando la laguna, energía de emergencia disponible para cada unidad desde grupo electrógeno central. Certificación sustentable, terrazas, jardines privados con parrilla y vista a la laguna. Unidades pasantes con vista este/ oeste. Pent houses y unidades tipo en los extremos del edificio con amplias terrazas semi cubiertas. Allí donde la naturaleza y el aire puro se encuentran con la más alta calidad de servicios urbanos dominando el centro de la escena en una ciudad reconocida como pionera y líder en su tipo. Desde su lanzamiento en 1.999, Nordelta muestra un crecimiento indetenible y a la vez inteligente por la combinación del buen gusto, sus atractivos y la naturaleza, que con el desarrollo de Oceana logra el equilibrio perfecto de confort y bienestar. Imponente y sutil reconoce la valoración del espacio y la privacidad ofreciendo unidades de dos, tres, cuatro y cinco ambientes con exquisitos detalles de terminación. Su ubicación privilegiada, a solo 30 km de la Capital Federal y con dos rápidas vías de acceso, Martillero y Corredor Inmobiliario: Maria S Vilariño CMCPSI 6726 Todas las propiedades son tasadas y bajo normas establecidas en la ley publicamos las propiedades para su comercialización. La intermediación y la conclusión de las operaciones son actividades exclusivas de este matriculado. ........... Todas las propiedades son tasadas bajo normas establecidas en la Ley. La intermediación y la conclusión de las operaciones son actividades exclusivas de estos matriculados."^^xsd:string ;
+    foaf:maker ns1:agent_Grupo%20Inmobiliario%20Olhaus .
+
+ns1:province_GBA%20Norte a core:Region ;
+    rdfs:label "GBA Norte"^^xsd:string .
+
+core:Building a owl:Class ;
+    rdfs:label "Building"@en ;
+    rdfs:comment "A confined building structure."@en ;
+    rdfs:subClassOf core:Space .
+
+core:Region a owl:Class ;
+    rdfs:label "Region"@en ;
+    rdfs:comment "An administrative geospatial unit larger than the individual real estate. For instance, \"Lombary\", \"North America\", \"The Back Bay\", \"Elnätsområde Syd\", etc."@en ;
+    rdfs:subClassOf core:Space .
+
+core:hasDocument a owl:ObjectProperty ;
+    rdfs:label "has document"@en ;
+    rdfs:range core:Document .
+
+core:includedIn a owl:ObjectProperty ;
+    rdfs:label "included in"@en ;
+    rdfs:comment "Indicates that an entity is included in some Collection, e.g., a Building is included in a RealEstate, or a Room is included in an Apartment."@en ;
+    rdfs:range core:Collection ;
+    owl:inverseOf core:includes .
+
+core:isPartOf a owl:ObjectProperty ;
+    rdfs:label "is part of"@en ;
+    rdfs:comment "Indicates a super-entity of the same base type (i.e., Spaces only have Spaces as parents, Organizations only have Organizations, etc)."@en .
+
+v1:PriceSpecification a owl:Class ;
+    rdfs:label "Price specification"@en ;
+    rdfs:comment "The superclass of all price specifications."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+ns2:Item a owl:Class ;
+    rdfs:label "Item"@en ;
+    rdfs:comment "An Item is something which can be in a Container."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:Space,
+        ns2:UserAccount .
+
+foaf:Agent a owl:Class ;
+    owl:equivalentClass core:Agent .
+
+core:Document a owl:Class ;
+    rdfs:label "Document"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ] ;
+    o2o:endpoint "document" ;
+    o2o:included true .
+
+core:Room a owl:Class ;
+    rdfs:label "Room"@en ;
+    rdfs:comment "Base class for all more specific room types."@en ;
+    rdfs:subClassOf core:BuildingComponent,
+        core:Space ;
+    o2o:endpoint "room" ;
+    o2o:included true .
+
+core:includes a owl:ObjectProperty ;
+    rdfs:label "includes"@en ;
+    rdfs:comment "Member entities of a collection; e.g., a Campus includes some Space, an Apartment includes some Room, etc."@en ;
+    rdfs:domain core:Collection .
+
+ns2:UserAccount a owl:Class ;
+    rdfs:label "User Account"@en ;
+    rdfs:comment "A user account in an online community site."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf foaf:OnlineAccount .
+
+core:Collection a owl:Class ;
+    rdfs:label "Collection"@en ;
+    rdfs:comment "An administrative grouping of entities that are adressed and treated as a unit for some purpose. These entities may have some spatial arrangement (e.g., an apartment is typically contiguous) but that is not a requirement (see, e.g., a distributed campus consisting of spatially disjoint plots or buildings)."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ] ;
+    o2o:endpoint "collection" ;
+    o2o:included true .
+
+core:hasLocationAttribute a owl:DatatypeProperty ;
+    rdfs:label "has location attribute"@en ;
+    rdfs:comment "This property is a cognitive clustering for human consumption, grouping sub-properties that assign labels (e.g., place names, addresses, etc.) to Geometry entities. This branch of the property hierarchy may need some further development and cleaning up in future versions."@en ;
+    rdfs:subPropertyOf geo:hasSerialization .
+
+core:BuildingComponent a owl:Class ;
+    rdfs:label "Building component"@en ;
+    rdfs:comment "A part that constitutes a piece of a building's structural makeup. E.g., Facade, Wall, Slab, RoofInner, etc."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:BuildingComponent ;
+            owl:onProperty core:hasPart ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass core:BuildingComponent ;
+            owl:onProperty core:isPartOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:BuildingComponent ;
+            owl:onProperty core:isPartOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Building ;
+            owl:onProperty core:componentOfBuilding ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass core:Building ;
+            owl:onProperty core:componentOfBuilding ] ;
+    o2o:endpoint "buildingcomponent" ;
+    o2o:included true .
+
+ns2: a owl:NamedIndividual,
+        owl:Thing ;
+    dcterms:title "SIOC Core Ontology Namespace"@en .
+
+core:Space a owl:Class ;
+    rdfs:label "Space"@en ;
+    rdfs:comment "A contiguous part of the physical world that has a 3D spatial extent and that contains or can contain sub-spaces. E.g., a Region can contain many pieces of Land, which in turn can contain many Buildings."@en ;
+    rdfs:seeAlso "https://schema.org/Place"^^xsd:anyURI ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:hasPart ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:isPartOf ] ;
+    o2o:endpoint "space" ;
+    o2o:included true .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource core:Room ;
+    owl:annotatedTarget core:BuildingComponent ;
+    owl:deprecated true .
+
+[] a v1:Offering ;
+    v1:description "VGhlIFNldmVuIE5vYWhpZGUgTGF3cw0KMS4gQmVsaWVmIGluIEctZA0KMi4gUmVzcGVjdCBHLWQgYW5kIHByYWlzZSBoaW0NCjMuIFJlc3BlY3QgaHVtYW4gbGlmZQ0KNC4gUmVzcGVjdCB0aGUgZmFtaWx5DQo1LiBSZXNwZWN0IGh1bWFuIGJlaW5ncw0KNi4gSGF2ZSBhIGp1ZGljaWFsIHN5c3RlbQ0KNy4gUmVzcGVjdCBhbGwgY3JlYXR1cmVz" .
+
+@prefix : <https://raw.githubusercontent.com/fdioguardi/pronto/main/ontology/pronto.owl#> .
+@prefix core: <https://w3id.org/rec/core/> .
+@prefix cpannotationschema: <http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix ns: <http://creativecommons.org/ns#> .
+@prefix ns1: <https://raw.githubusercontent.com/jwackito/csv2pronto/main/ontology/pronto.owl#> .
+@prefix ns2: <http://rdfs.org/sioc/ns#> .
+@prefix o2o: <https://karlhammar.com/owl2oas/o2o.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix v1: <http://purl.org/goodrelations/v1#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns:license a owl:AnnotationProperty .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:date a owl:DatatypeProperty ;
+    rdfs:label "date"@en ;
+    rdfs:range xsd:dateTime .
+
+dc:description a owl:AnnotationProperty .
+
+dc:publisher a owl:AnnotationProperty .
+
+dc:rights a owl:AnnotationProperty .
+
+dc:subject a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+dcterms:license a owl:AnnotationProperty .
+
+dcterms:modified a owl:AnnotationProperty .
+
+dcterms:title a owl:DatatypeProperty ;
+    rdfs:label "title"@en .
+
+v1:Business rdfs:label "Business (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are themselves offering commercial services or products on the market. Usually, businesses are characterized by the fact that they are officially registered with the public administration and strive for profits by their activities."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:Enduser rdfs:label "Enduser (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are purchasing the good or service for private consumption, in particular not for resale or for usage within an industrial enterprise. By default, a Business Entity is an Enduser."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:LeaseOut a v1:BusinessFunction,
+        owl:NamedIndividual ;
+    rdfs:label "Lease Out (business function)"@en ;
+    rdfs:comment "This gr:BusinessFunction indicates that the gr:BusinessEntity offers (or seeks) the temporary right to use the specified gr:ProductOrService."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:PublicInstitution rdfs:label "Public institution (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are part of the adminstration or owned by the public."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:Reseller rdfs:label "Reseller (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are purchasing the scope of products included in the gr:Offering for resale on the market. Resellers are also businesses, i.e., they are officially registered with the public administration and strive for profits by their activities."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:condition a owl:DatatypeProperty ;
+    rdfs:label "condition (0..1)"@en ;
+    rdfs:comment "A textual description of the condition of the product or service, or the products or services included in the offer (when attached to a gr:Offering)"@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range rdfs:Literal .
+
+v1:description a owl:DatatypeProperty ;
+    rdfs:label "description (0..1)"@en ;
+    rdfs:comment """A short textual description of the resource. 
+
+This property is semantically equivalent to rdfs:comment and just meant as a handy shortcut for marking up data."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range rdfs:Literal .
+
+v1:hasBusinessFunction a owl:ObjectProperty ;
+    rdfs:label "has business function (1..*)"@en ;
+    rdfs:comment """This specifies the business function of the gr:Offering, i.e. whether the gr:BusinessEntity is offering to sell, to lease, or to repair the particular type of product. In the case of bundles, it is also possible to attach individual business functions to each gr:TypeAndQuantityNode. The business function of the main gr:Offering determines the business function for all included objects or services, unless a business function attached to a gr:TypeAndQuantityNode overrides it.
+	
+Note: While it is possible that an entity is offering multiple types of business functions for the same set of objects (e.g. rental and sales), this should usually not be stated by attaching multiple business functions to the same gr:Offering, since the gr:UnitPriceSpecification for the varying business functions will typically be very different."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range v1:BusinessFunction .
+
+v1:hasCurrency a owl:DatatypeProperty ;
+    rdfs:label "has currency (1..1)"@en ;
+    rdfs:comment "The currency for all prices in the gr:PriceSpecification given using the ISO 4217 standard (3 characters)."@en ;
+    rdfs:domain v1:PriceSpecification ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+v1:hasPriceSpecification a owl:ObjectProperty ;
+    rdfs:label "has price specification (0..*)"@en ;
+    rdfs:comment """This links a gr:Offering to a gr:PriceSpecification or specifications. There can be unit price specifications, payment charge specifications, and delivery charge specifications. For each type, multiple specifications for the same gr:Offering are possible, e.g. for different quantity ranges or for different currencies, or for different combinations of gr:DeliveryMethod and target destinations.
+
+Recommended retail prices etc. can be marked by the gr:priceType property of the gr:UnitPriceSpecification."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range v1:PriceSpecification .
+
+v1:hasUnitOfMeasurement a owl:DatatypeProperty ;
+    rdfs:label "has unit of measurement (1..1)"@en ;
+    rdfs:comment "The unit of measurement for a gr:QuantitativeValue, a gr:UnitPriceSpecification, or a gr:TypeAndQuantityNode given using the UN/CEFACT Common Code (3 characters)."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+v1:hasValue a owl:DatatypeProperty ;
+    rdfs:label "has value (0..1)"@en ;
+    rdfs:comment "This subproperty specifies that the upper and lower limit of the given gr:QuantitativeValue are identical and have the respective value. It is a shortcut for such cases where a quantitative property is (at least practically) a single point value and not an interval."@en ;
+    rdfs:domain v1:QuantitativeValue ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:float ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+v1:priceType a owl:DatatypeProperty ;
+    rdfs:label "price type (0..1)"@en ;
+    rdfs:comment """This attribute can be used to distinguish multiple different price specifications for the same gr:Offering. It supersedes the former gr:isListPrice property. The following values are recommended:
+
+The absence of this property marks the actual sales price.
+
+SRP: "suggested retail price" - applicable for all sorts of a non-binding retail price recommendations, e.g. such published by the manufacturer or the distributor. This value replaces the former gr:isListPrice property.
+
+INVOICE: The invoice price, mostly used in the car industry - this is the price a dealer pays to the manufacturer, excluding rebates and charges."""@en ;
+    rdfs:domain v1:UnitPriceSpecification ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+<http://purl.org/rss/1.0/modules/content/encoded> a owl:DatatypeProperty ;
+    rdfs:label "encoded"@en ;
+    rdfs:comment """An element whose contents are the entity-encoded or CDATA-escaped version of the content of the item. Example:
+
+<content:encoded><![CDATA[<p>What a <em>beautiful</em> day!</p>]]></content:encoded>"""@en ;
+    rdfs:range xsd:string .
+
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+ns2:Container a owl:Class ;
+    rdfs:label "Container"@en ;
+    rdfs:comment "An area in which content Items are contained."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:Item,
+        ns2:UserAccount .
+
+ns2:Site a owl:Class ;
+    rdfs:label "Site"@en ;
+    rdfs:comment "A Site can be the location of an online community or set of communities, with UserAccounts and Usergroups creating Items in a set of Containers. It can be thought of as a web-accessible data Space."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf ns2:Space .
+
+ns2:about a owl:ObjectProperty ;
+    rdfs:label "about"@en ;
+    rdfs:comment "Specifies that this Item is about a particular resource, e.g. a Post describing a book, hotel, etc."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:account_of a owl:ObjectProperty ;
+    rdfs:label "account of"@en ;
+    rdfs:comment "Refers to the foaf:Agent or foaf:Person who owns this sioc:UserAccount."@en ;
+    rdfs:domain ns2:UserAccount ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range foaf:Agent ;
+    owl:inverseOf foaf:account .
+
+ns2:content a owl:DatatypeProperty ;
+    rdfs:label "content"@en ;
+    rdfs:comment "The content of the Item in plain text format."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:creator_of a owl:ObjectProperty ;
+    rdfs:label "creator of"@en ;
+    rdfs:comment "A resource that the UserAccount is a creator of."@en ;
+    rdfs:domain ns2:UserAccount ;
+    rdfs:isDefinedBy ns2: ;
+    owl:inverseOf ns2:has_creator .
+
+ns2:embeds_knowledge a owl:ObjectProperty ;
+    rdfs:label "embeds knowledge"@en ;
+    rdfs:comment "This links Items to embedded statements, facts and structured content."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:id a owl:DatatypeProperty ;
+    rdfs:label "id"@en ;
+    rdfs:comment "An identifier of a SIOC concept instance. For example, a user ID. Must be unique for instances of each type of SIOC concept within the same site."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:link a owl:ObjectProperty ;
+    rdfs:label "link"@en ;
+    rdfs:comment "A URI of a document which contains this SIOC object."@en ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:name a owl:DatatypeProperty ;
+    rdfs:label "name"@en ;
+    rdfs:comment "The name of a SIOC concept instance, e.g. a username for a UserAccount, group name for a Usergroup, etc."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:read_at a owl:DatatypeProperty ;
+    rdfs:label "read at"@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range xsd:dateTime .
+
+ns2:related_to a owl:ObjectProperty ;
+    rdfs:label "related to"@en ;
+    rdfs:comment "Related resources for this resource, e.g. for Posts, perhaps determined implicitly from topics or references."@en ;
+    rdfs:isDefinedBy ns2: .
+
+<http://schema.org/Place> a owl:Class ;
+    rdfs:label "Place"@en .
+
+<http://schema.org/seller> a owl:ObjectProperty ;
+    rdfs:label "seller"@en ;
+    rdfs:comment "An entity which offers (sells / leases / lends / loans) the services / goods. A seller may also be a provider."@en ;
+    rdfs:range foaf:Agent .
+
+cpannotationschema:coversRequirements a owl:AnnotationProperty .
+
+owl:deprecated a owl:AnnotationProperty .
+
+foaf:homepage a owl:AnnotationProperty .
+
+foaf:made a owl:ObjectProperty ;
+    rdfs:label "made"@en ;
+    rdfs:comment "Something that was made by this agent."@en ;
+    rdfs:domain foaf:Agent ;
+    owl:inverseOf foaf:maker .
+
+o2o:endpoint a owl:AnnotationProperty .
+
+o2o:included a owl:AnnotationProperty .
+
+<https://raw.githubusercontent.com/fdioguardi/pronto/main/ontology/pronto.owl> a owl:Ontology ;
+    rdfs:label "Property Ontology"@en ;
+    ns:license <https://opensource.org/licenses/MIT> ;
+    dc:contributor "Diego Torres"^^xsd:string ;
+    dc:creator "Felipe Dioguardi"^^xsd:string ;
+    dc:description """This ontology covers multiple types of properties and buildings on the real estate market, and real estate listings from different sites that advertise them.
+
+It is mainly based on the RealEstateCore and Semantically-Interlinked Online Communities ontologies."""@en ;
+    dc:publisher "LIFIA"@en ;
+    vann:preferredNamespacePrefix "pr"@en ;
+    rdfs:comment "Pronto is a work-in-progress; requirements are rather unclear as of yet."@en ;
+    rdfs:seeAlso <http://rdfs.org/sioc/>,
+        <http://rdfs.org/sioc/spec>,
+        <http://sioc-project.org>,
+        <http://www.heppnetz.de/ontologies/goodrelations/v1>,
+        <https://realestatecore.io>,
+        <https://w3id.org/rec/>,
+        <https://xmlns.com/foaf/spec/> .
+
+:RealEstateListing a owl:Class ;
+    rdfs:label "Real Estate Listing"@en ;
+    rdfs:comment "A public advertisement of some real estate."@en ;
+    rdfs:subClassOf v1:Offering,
+        ns2:Post .
+
+:disposition a owl:DatatypeProperty ;
+    rdfs:label "disposition"@en ;
+    rdfs:comment "Cardinal point in which the property is facing."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:has_feature a owl:ObjectProperty ;
+    rdfs:domain core:Space ;
+    rdfs:range :Feature .
+
+:has_number_of_rooms a owl:DatatypeProperty ;
+    rdfs:label "has number of rooms"@en ;
+    rdfs:range xsd:int .
+
+:has_size_specification a owl:ObjectProperty ;
+    rdfs:label "has size specification (0..*)"@en ;
+    rdfs:comment """This links a rec:Space to a pr:SizeSpecification or specifications. Multiple specifications for the same rec:Space are possible, e.g. for different surfaces measured or for different units.
+
+The specific surface measured can be marked by the gr:sizeType property of the pr:SizeSpecification."""@en ;
+    rdfs:domain core:Space ;
+    rdfs:range :SizeSpecification .
+
+:has_value a owl:DatatypeProperty ;
+    rdfs:label "has value"@en ;
+    rdfs:domain :Feature ;
+    rdfs:range rdfs:Literal .
+
+:is_brand_new a owl:DatatypeProperty ;
+    rdfs:label "is brand new"@en ;
+    rdfs:comment "Whether the Building or Land has been inhabited before."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:is_finished a owl:DatatypeProperty ;
+    rdfs:label "is finished"@en ;
+    rdfs:comment "Whether the building process has been completed"@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:luminosity a owl:DatatypeProperty ;
+    rdfs:label "luminosity"@en ;
+    rdfs:comment "The brightness or luminosity of the property."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:orientation a owl:DatatypeProperty ;
+    rdfs:label "orientation"@en ;
+    rdfs:comment "Where the property is facing."@en ;
+    rdfs:domain core:Space ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:property_type a owl:DatatypeProperty ;
+    rdfs:label "property type"@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string .
+
+:size_type a owl:DatatypeProperty ;
+    rdfs:label "size type (0..1)"@en ;
+    rdfs:comment "The type of surface measured by a SizeSpecification, e.g. \"Covered\", \"Total\"."@en ;
+    rdfs:domain :SizeSpecification ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+schema:address a owl:DatatypeProperty ;
+    rdfs:label "address"@en ;
+    rdfs:comment "Physical address of the item."@en ;
+    rdfs:domain core:Space .
+
+schema:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude"@en ;
+    rdfs:comment "The latitude of a location. For example 37.42242 (WGS 84)."@en ;
+    rdfs:range xsd:double ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+schema:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude"@en ;
+    rdfs:comment "The longitude of a location. For example -122.08585 (WGS 84)."@en ;
+    rdfs:range xsd:double ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+<https://w3id.org/rec/building/Toilet> a owl:Class ;
+    rdfs:subClassOf <https://w3id.org/rec/building/PersonalHygiene> .
+
+core:Land a owl:Class ;
+    rdfs:label "Land"@en ;
+    rdfs:comment "A piece of land upon which one or more buildings may be situated."@en ;
+    rdfs:subClassOf core:Space .
+
+core:SubBuilding a owl:Class ;
+    rdfs:label "Sub-building"@en ;
+    rdfs:comment "A part of a larger building complex, e.g., a wing, a tower, or an interconnected (through walkways or other means) but largely free-standing building."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:oneOf [ a rdf:List ;
+                            rdf:first "Tower" ;
+                            rdf:rest [ a rdf:List ;
+                                    rdf:first "Wing" ;
+                                    rdf:rest () ] ] ] ;
+            owl:onProperty core:type ],
+        core:Space .
+
+core:documentTopic a owl:ObjectProperty ;
+    rdfs:label "document topic"@en ;
+    rdfs:domain core:Document ;
+    owl:inverseOf core:hasDocument .
+
+core:hasCity a owl:DatatypeProperty ;
+    rdfs:label "has city"@en ;
+    rdfs:comment "Indicates a city that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasCountry a owl:DatatypeProperty ;
+    rdfs:label "has country"@en ;
+    rdfs:comment "Indicates a country that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasGeonamesId a owl:DatatypeProperty ;
+    rdfs:label "has geonames ID"@en ;
+    rdfs:comment """Linking to https://www.geonames.org
+
+E.g. for Stockholm (Sweden):
+LocationUUID#1 hasGenonames http://www.geonames.org/2673730/stockholm.html"""@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasPostalAddress a owl:DatatypeProperty ;
+    rdfs:label "has postal address"@en ;
+    rdfs:comment "Address used for postal delivery."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasRegion a owl:DatatypeProperty ;
+    rdfs:label "has region"@en ;
+    rdfs:comment "Indicates a region that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasVistingAddress a owl:DatatypeProperty ;
+    rdfs:label "has visting address"@en ;
+    rdfs:comment "An address for visiting the Geometry. If a Geometry has multiple visiting addresses, then just add as many hasVistingAddress as needed."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasZipCode a owl:DatatypeProperty ;
+    rdfs:label "has zip code"@en ;
+    rdfs:comment "Indicates a certain Geometry's zip code."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:isLocatedAtLocalCoordinates a owl:DatatypeProperty ;
+    rdfs:label "is located at local coordinates"@en ;
+    rdfs:comment "Expressed as a string adhering to the notation \"(x,y,z)\", where x, y, and z ar whole or decimal numbers indicating the position in the local building coordinate system, measured in meters. This relates to the outside world coordinate refence system via the values expressed by GeoReferenceOrigo."@en ;
+    rdfs:subPropertyOf geo:hasSerialization .
+
+core:isLocationOf a owl:ObjectProperty ;
+    rdfs:label "is location of"@en ;
+    rdfs:domain core:Space ;
+    owl:inverseOf core:locatedIn .
+
+v1:Sell a v1:BusinessFunction,
+        owl:NamedIndividual ;
+    rdfs:label "Sell (business function)"@en ;
+    rdfs:comment "This gr:BusinessFunction indicates that the gr:BusinessEntity offers to permanently transfer all property rights on the specified gr:ProductOrService."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+ns2:Post a owl:Class ;
+    rdfs:label "Post"@en ;
+    rdfs:comment "An article or message that can be posted to a Forum."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf ns2:Item,
+        foaf:Document .
+
+ns2:has_creator a owl:ObjectProperty ;
+    rdfs:label "has creator"@en ;
+    rdfs:comment "A resource that the UserAccount is a creator of."@en ;
+    rdfs:isDefinedBy ns2: .
+
+<http://rdfs.org/sioc/spec> rdfs:label "SIOC Core Ontology Specification" .
+
+foaf:Document a owl:Class .
+
+foaf:OnlineAccount a owl:Class ;
+    rdfs:label "OnlineAccount"@en .
+
+foaf:account a owl:ObjectProperty ;
+    rdfs:label "account"@en .
+
+foaf:maker a owl:ObjectProperty ;
+    rdfs:label "maker"@en ;
+    rdfs:comment "An agent that made this thing."@en ;
+    rdfs:range foaf:Agent .
+
+ns1:feature_Balc%C3%B3n_True a ns1:Feature ;
+    rdfs:label "Balcón: True"^^xsd:string ;
+    dc:title "Balcón"^^xsd:string ;
+    ns1:has_value "true"^^xsd:string .
+
+ns1:feature_Cantidad%20pisos%20en%20edificio_5 a ns1:Feature ;
+    rdfs:label "Cantidad pisos en edificio: 5"^^xsd:string ;
+    dc:title "Cantidad pisos en edificio"^^xsd:string ;
+    ns1:has_value "5"^^xsd:string .
+
+ns1:neibourhood_GBA%20Norte_Tigre_Nordelta a core:Region ;
+    rdfs:label "Nordelta"^^xsd:string ;
+    core:locatedIn ns1:district_GBA%20Norte_Tigre,
+        ns1:province_GBA%20Norte .
+
+ns1:site3 ns2:space_of ns1:listing_site3_49766448 .
+
+ns1:space_site3_49766448 a core:Space ;
+    ns1:disposition "Frente"^^xsd:string ;
+    ns1:hasSizeSpecification [ a ns1:SizeSpecification ;
+            v1:hasUnitOfMeasurement "m²"^^xsd:string ;
+            v1:hasValue "121.0"^^xsd:float ;
+            ns1:size_type "total"^^xsd:string ],
+        [ a ns1:SizeSpecification ;
+            v1:hasUnitOfMeasurement "m²"^^xsd:string ;
+            v1:hasValue "121.0"^^xsd:float ;
+            ns1:size_type "covered"^^xsd:string ] ;
+    ns1:has_amount_of_rooms 3 ;
+    ns1:has_feature ns1:feature_Balc%C3%B3n_True,
+        ns1:feature_Cantidad%20pisos%20en%20edificio_5 ;
+    ns1:orientation "N"^^xsd:string ;
+    ns1:property_type "Departamento"^^xsd:string ;
+    schema:address "Oceana Nordelta 100"^^xsd:string ;
+    schema:latitude -3.442541e+01 ;
+    schema:longitude -5.863081e+01 ;
+    core:hasPart ns1:space_site3_49766448_bath_0,
+        ns1:space_site3_49766448_bath_1,
+        ns1:space_site3_49766448_bed_0,
+        ns1:space_site3_49766448_bed_1,
+        ns1:space_site3_49766448_garage_0,
+        ns1:space_site3_49766448_garage_1 ;
+    core:locatedIn ns1:district_GBA%20Norte_Tigre,
+        ns1:neibourhood_GBA%20Norte_Tigre_Nordelta,
+        ns1:province_GBA%20Norte .
+
+ns1:space_site3_49766448_bath_0 a <https://w3id.org/rec/building/Bathroom> .
+
+ns1:space_site3_49766448_bath_1 a <https://w3id.org/rec/building/Bathroom> .
+
+ns1:space_site3_49766448_bed_0 a <https://w3id.org/rec/building/Bedroom> .
+
+ns1:space_site3_49766448_bed_1 a <https://w3id.org/rec/building/Bedroom> .
+
+ns1:space_site3_49766448_garage_0 a <https://w3id.org/rec/building/Garage> .
+
+ns1:space_site3_49766448_garage_1 a <https://w3id.org/rec/building/Garage> .
+
+<https://w3id.org/rec/building/PersonalHygiene> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+core:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "The human, group, or machine that consumes or acts upon an object or data. This higher-level grouping allows properties that are shared among its subclasses (Person, Organization, Company, Department...) to be anchored in one joint place, on the Agent class."@en ;
+    o2o:endpoint "agent" ;
+    o2o:included true .
+
+core:RealEstate a owl:Class ;
+    rdfs:label "Real estate"@en ;
+    rdfs:comment "The legal/administrative representation of some lands and/or buildings."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty core:includes ;
+            owl:someValuesFrom core:Space ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:includes ],
+        core:SpaceCollection ;
+    o2o:endpoint "realestate" ;
+    o2o:included true .
+
+core:SpaceCollection a owl:Class ;
+    rdfs:label "Space collection"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:includes ],
+        [ a owl:Restriction ;
+            owl:onProperty core:includes ;
+            owl:someValuesFrom core:Space ],
+        core:Collection .
+
+core:componentOf a owl:ObjectProperty ;
+    rdfs:label "component of"@en ;
+    rdfs:comment "Links a Building Component to a Space, that the Building Component is either contained in, adjacent to or intersecting with."@en ;
+    rdfs:domain core:BuildingComponent ;
+    rdfs:range core:Space ;
+    owl:inverseOf core:hasBuildingComponent .
+
+core:hasBuildingComponent a owl:ObjectProperty ;
+    rdfs:label "has building component"@en ;
+    rdfs:comment "Links a Space to a BuildingComponent that is either contained in, adjacent to or intersecting with the Space."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range core:BuildingComponent .
+
+core:locatedIn a owl:ObjectProperty ;
+    rdfs:label "located in"@en ;
+    rdfs:range core:Space .
+
+core:type a owl:DatatypeProperty ;
+    rdfs:label "type"@en ;
+    rdfs:range xsd:string .
+
+v1:QuantitativeValue a owl:Class ;
+    rdfs:label "Quantitative value"@en ;
+    rdfs:comment """A quantitative value is a numerical interval that represents the range of a certain gr:quantitativeProductOrServiceProperty in terms of the lower and upper bounds for a particular gr:ProductOrService. It is to be interpreted in combination with the respective unit of measurement. Most quantitative values are intervals even if they are in practice often treated as a single point value.
+
+Example: a weight between 10 and 25 kilogramms, a length between 10 and 15 milimeters.
+
+Compatibility with schema.org: This class is equivalent to http://schema.org/Quantity."""@en .
+
+v1:UnitPriceSpecification a owl:Class ;
+    rdfs:label "Unit price specification"@en ;
+    rdfs:comment """A unit price specification is a conceptual entity that specifies the price asked for a given gr:Offering by the respective gr:Business Entity. An offering may be linked to multiple unit price specifications that specify alternative prices for non-overlapping sets of conditions (e.g. quantities or sales regions) or with differing validity periods. 
+
+A unit price specification is characterized by (1) the lower and upper limits and the unit of measurement of the eligible quantity, (2) by a monetary amount per unit of the product or service, and (3)  whether this prices includes local sales taxes, namely VAT.
+	
+Example: The price, including VAT, for 1 kg of a given material is 5 Euros per kg for 0 - 5 kg and 4 Euros for quantities above 5 kg.
+
+The eligible quantity interval for a given price is specified using the object property gr:hasEligibleQuantity, which points to an instance of gr:QuantitativeValue. The currency is specified using the gr:hasCurrency property, which points to an ISO 4217 currency code. The unit of measurement for the eligible quantity is specified using the gr:hasUnitOfMeasurement datatype property, which points to an UN/CEFACT Common Code (3 characters).
+	
+In most cases, the appropriate unit of measurement is the UN/CEFACT Common Code "C62" for "Unit or piece", since a gr:Offering is defined by the quantity and unit of measurement of all items included (e.g. "1 kg of bananas plus a 2 kg of apples"). As long at the offering consists of only one item, it is also possible to use an unit of measurement of choice for specifying the price per unit. For bundles, however, only  "C62" for "Unit or piece" is a valid unit of measurement.
+
+You can assume that the price is given per unit or piece if there is no gr:hasUnitOfMeasurement property attached to the price.
+	
+Whether VAT and sales taxes are included in this price is specified using the property gr:valueAddedTaxIncluded (xsd:boolean).
+	
+The price per unit of measurement is specified as a float value of the gr:hasCurrencyValue property. The currency is specified via the gr:hasCurrency datatype property. Whether the price includes VAT or not is indicated by the gr:valueAddedTaxIncluded datatype property.
+
+The property priceType can be used to indicate that the price is a retail price recommendation only (i.e. a list price). 
+
+If the price can only be given as a range, use gr:hasMaxCurrencyValue and gr:hasMinCurrencyValue for the upper and lower bounds.
+
+Important: When querying for the price, always use gr:hasMaxCurrencyValue and gr:hasMinCurrencyValue.
+
+Note 1: Due to the complexity of pricing scenarios in various industries, it may be necessary to create extensions of this fundamental model of price specifications. Such can be done easily by importing and refining the GoodRelations ontology.
+
+Note 2: For Google, attaching a gr:validThrough statement to a gr:UnitPriceSpecification is mandatory. 
+"""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:subClassOf v1:PriceSpecification .
+
+ns2:Space a owl:Class ;
+    rdfs:label "Space"@en ;
+    rdfs:comment "A Space is a place where data resides, e.g. on a website, desktop, fileshare, etc."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:UserAccount .
+
+geo:hasSerialization a owl:DatatypeProperty ;
+    rdfs:label "has serialization"@en ;
+    rdfs:comment """Connects a geometry object with its text-based serialization.
+
+GeoSPARQL is Copyright (c) 2012 Open Geospatial Consortium, Inc. All Rights Reserved. http://www.opengeospatial.org/ogc/document."""@en ;
+    rdfs:isDefinedBy geo: ;
+    rdfs:range rdfs:Literal .
+
+:Feature a owl:Class ;
+    rdfs:label "Feature"@en .
+
+:SizeSpecification a owl:Class ;
+    rdfs:label "Size specification"@en ;
+    rdfs:comment "A unit price specification is a conceptual entity that specifies the size of a given rec:Space. A space may be linked to multiple size specifications that specify alternative sizes for different types of measurements (e.g. total or covered surface)."@en ;
+    rdfs:subClassOf v1:QuantitativeValue .
+
+ns1:account_site3_30408458 a ns2:UserAccount ;
+    ns2:account_of ns1:agent_Grupo%20Inmobiliario%20Olhaus ;
+    ns2:creator_of ns1:listing_site3_49766448 ;
+    ns2:id "30408458"^^xsd:string ;
+    ns2:name "Grupo Inmobiliario Olhaus"^^xsd:string .
+
+ns1:district_GBA%20Norte_Tigre a core:Region ;
+    rdfs:label "Tigre"^^xsd:string ;
+    core:locatedIn ns1:province_GBA%20Norte .
+
+ns1:real_estate_site3_49766448 a core:RealEstate ;
+    ns1:managed_by ns1:agent_Grupo%20Inmobiliario%20Olhaus ;
+    core:includes ns1:space_site3_49766448 .
+
+<https://w3id.org/rec/building/Bathroom> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+<https://w3id.org/rec/building/Bedroom> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+<https://w3id.org/rec/building/Garage> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+core:componentOfBuilding a owl:ObjectProperty ;
+    rdfs:label "component of building"@en ;
+    rdfs:comment "Indicates which Building a certain Building Component is part of."@en ;
+    rdfs:domain core:BuildingComponent ;
+    rdfs:range core:Building ;
+    rdfs:subPropertyOf core:componentOf .
+
+core:hasPart a owl:ObjectProperty ;
+    rdfs:label "has part"@en ;
+    rdfs:comment "Points to sub-entities that share the same base type (i.e., Spaces only have Spaces as parts, Assets only have Assets as parts, etc.)."@en ;
+    owl:inverseOf core:isPartOf .
+
+v1:BusinessFunction a owl:Class ;
+    rdfs:label "Business function"@en ;
+    rdfs:comment """The business function specifies the type of activity or access (i.e., the bundle of rights) offered by the gr:BusinessEntity on the gr:ProductOrService through the gr:Offering. Typical are sell, rental or lease, maintenance or repair, manufacture / produce, recycle / dispose, engineering / construction, or installation.
+
+Licenses and other proprietary specifications of access rights are also instances of this class.
+
+Examples: A particular offering made by Miller Rentals Ltd. says that they (1) sell Volkswagen Golf convertibles, (2) lease out a particular Ford pick-up truck, and (3) dispose car wrecks of any make and model."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    owl:disjointWith v1:Offering,
+        v1:PriceSpecification .
+
+v1:Offering a owl:Class ;
+    rdfs:label "Offering"@en ;
+    rdfs:comment """An offering represents the public, not necessarily binding, not necessarily exclusive, announcement by a gr:BusinessEntity to provide (or seek) a certain gr:BusinessFunction for a certain gr:ProductOrService to a specified target audience. An offering is specified by the type of product or service or bundle it refers to, what business function is being offered (sales, rental, ...), and a set of commercial properties. It can either refer to 
+(1) a clearly specified instance (gr:Individual),
+(2) to a set of anonymous instances of a given type (gr:SomeItems),
+(3) a product model specification (gr:ProductOrServiceModel), see also section 3.3.3 of the GoodRelations Technical Report. 
+
+An offering may be constrained in terms of the eligible type of business partner, countries, quantities, and other commercial properties. The definition of the commercial properties, the type of product offered, and the business function are explained in other parts of this vocabulary in more detail.
+
+Example: Peter Miller offers to repair TV sets made by Siemens, Volkswagen Innsbruck sells a particular instance of a Volkswagen Golf at $10,000.
+
+Compatibility with schema.org: This class is a superclass to http://schema.org/Offer, since gr:Offering can also represent demand."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    owl:disjointWith v1:PriceSpecification .
+
+ns1:agent_Grupo%20Inmobiliario%20Olhaus a foaf:Agent ;
+    foaf:account ns1:account_site3_30408458 ;
+    foaf:made ns1:listing_site3_49766448 ;
+    ns1:manages ns1:real_estate_site3_49766448 .
+
+ns1:listing_site3_49766448 a ns1:RealEstateListing ;
+    rdfs:label """
+Venta Departamento Ocena Nordelta
+"""^^xsd:string ;
+    v1:hasBuisnessFunction v1:Sell ;
+    v1:hasPriceSpecification [ a v1:UnitPriceSpecification ;
+            v1:hasCurrency "USD"^^xsd:string ;
+            v1:hasCurrencyValue "745995.0"^^xsd:float ;
+            v1:priceType "BASE"^^xsd:string ] ;
+    ns2:about ns1:real_estate_site3_49766448 ;
+    ns2:has_creator ns1:account_site3_30408458 ;
+    ns2:has_space ns1:site3 ;
+    ns2:id "49766448"^^xsd:string ;
+    ns2:read_at "2024-02-02T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "EL VALOR PUBLICADO ES EN DOLARES. Oceana Nordelta, unidad de 3 ambientes en el 5to piso A509 donde encontramos gran Master suite, suite jr, playroom, toilette, balcón terraza, y balcón con parrilla, 2 cochera y baulera. Lugares de estar apaisados, con doble visual: sol de la mañana y atardecer sobre el lago. Equipamiento y muebles de diseño contemporáneo. Tecnología y bajo consumo. Materiales solo de primera calidad. Dormitorios que guardan clara independencia entre ellos y respecto de las áreas sociales. Ambientes que respiran, ventilación cruzada. Espacios que se continúan en terrazas exteriores. Patios abiertos con parrillas hacia el este anexos a las cocinas. Galerías sobre el jardín y el lago. Una idea de confort que se extiende más allá del propio hábitat. FECHA DE ENTREGA FEBRERO 2025. Donde esta ubicado Oceana? En el cruce exacto entre paisajes. A orillas del gran lago central con una perfecta armonía entre naturaleza y paisaje hacen de esta belleza un lugar para vivir. Muelle privado y mirador hacia la laguna, salas de reuniones independientes en planta baja, pileta climatizada cubierta, gimnasio con aparatos de ultima generación, salón de relax, yoga y spa. Lounges y salas de ensayo, piletas y solarium exterior, senderos peatonales rodeando la laguna, energía de emergencia disponible para cada unidad desde grupo electrógeno central. Certificación sustentable, terrazas, jardines privados con parrilla y vista a la laguna. Unidades pasantes con vista este/ oeste. Pent houses y unidades tipo en los extremos del edificio con amplias terrazas semi cubiertas. Allí donde la naturaleza y el aire puro se encuentran con la más alta calidad de servicios urbanos dominando el centro de la escena en una ciudad reconocida como pionera y líder en su tipo. Desde su lanzamiento en 1.999, Nordelta muestra un crecimiento indetenible y a la vez inteligente por la combinación del buen gusto, sus atractivos y la naturaleza, que con el desarrollo de Oceana logra el equilibrio perfecto de confort y bienestar. Imponente y sutil reconoce la valoración del espacio y la privacidad ofreciendo unidades de dos, tres, cuatro y cinco ambientes con exquisitos detalles de terminación. Su ubicación privilegiada, a solo 30 km de la Capital Federal y con dos rápidas vías de acceso, Martillero y Corredor Inmobiliario: Maria S Vilariño CMCPSI 6726 Todas las propiedades son tasadas y bajo normas establecidas en la ley publicamos las propiedades para su comercialización. La intermediación y la conclusión de las operaciones son actividades exclusivas de este matriculado. ........... Todas las propiedades son tasadas bajo normas establecidas en la Ley. La intermediación y la conclusión de las operaciones son actividades exclusivas de estos matriculados."^^xsd:string ;
+    foaf:maker ns1:agent_Grupo%20Inmobiliario%20Olhaus .
+
+ns1:province_GBA%20Norte a core:Region ;
+    rdfs:label "GBA Norte"^^xsd:string .
+
+core:Building a owl:Class ;
+    rdfs:label "Building"@en ;
+    rdfs:comment "A confined building structure."@en ;
+    rdfs:subClassOf core:Space .
+
+core:Region a owl:Class ;
+    rdfs:label "Region"@en ;
+    rdfs:comment "An administrative geospatial unit larger than the individual real estate. For instance, \"Lombary\", \"North America\", \"The Back Bay\", \"Elnätsområde Syd\", etc."@en ;
+    rdfs:subClassOf core:Space .
+
+core:hasDocument a owl:ObjectProperty ;
+    rdfs:label "has document"@en ;
+    rdfs:range core:Document .
+
+core:includedIn a owl:ObjectProperty ;
+    rdfs:label "included in"@en ;
+    rdfs:comment "Indicates that an entity is included in some Collection, e.g., a Building is included in a RealEstate, or a Room is included in an Apartment."@en ;
+    rdfs:range core:Collection ;
+    owl:inverseOf core:includes .
+
+core:isPartOf a owl:ObjectProperty ;
+    rdfs:label "is part of"@en ;
+    rdfs:comment "Indicates a super-entity of the same base type (i.e., Spaces only have Spaces as parents, Organizations only have Organizations, etc)."@en .
+
+v1:PriceSpecification a owl:Class ;
+    rdfs:label "Price specification"@en ;
+    rdfs:comment "The superclass of all price specifications."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+ns2:Item a owl:Class ;
+    rdfs:label "Item"@en ;
+    rdfs:comment "An Item is something which can be in a Container."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:Space,
+        ns2:UserAccount .
+
+foaf:Agent a owl:Class ;
+    owl:equivalentClass core:Agent .
+
+core:Document a owl:Class ;
+    rdfs:label "Document"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ] ;
+    o2o:endpoint "document" ;
+    o2o:included true .
+
+core:Room a owl:Class ;
+    rdfs:label "Room"@en ;
+    rdfs:comment "Base class for all more specific room types."@en ;
+    rdfs:subClassOf core:BuildingComponent,
+        core:Space ;
+    o2o:endpoint "room" ;
+    o2o:included true .
+
+core:includes a owl:ObjectProperty ;
+    rdfs:label "includes"@en ;
+    rdfs:comment "Member entities of a collection; e.g., a Campus includes some Space, an Apartment includes some Room, etc."@en ;
+    rdfs:domain core:Collection .
+
+ns2:UserAccount a owl:Class ;
+    rdfs:label "User Account"@en ;
+    rdfs:comment "A user account in an online community site."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf foaf:OnlineAccount .
+
+core:Collection a owl:Class ;
+    rdfs:label "Collection"@en ;
+    rdfs:comment "An administrative grouping of entities that are adressed and treated as a unit for some purpose. These entities may have some spatial arrangement (e.g., an apartment is typically contiguous) but that is not a requirement (see, e.g., a distributed campus consisting of spatially disjoint plots or buildings)."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ] ;
+    o2o:endpoint "collection" ;
+    o2o:included true .
+
+core:hasLocationAttribute a owl:DatatypeProperty ;
+    rdfs:label "has location attribute"@en ;
+    rdfs:comment "This property is a cognitive clustering for human consumption, grouping sub-properties that assign labels (e.g., place names, addresses, etc.) to Geometry entities. This branch of the property hierarchy may need some further development and cleaning up in future versions."@en ;
+    rdfs:subPropertyOf geo:hasSerialization .
+
+core:BuildingComponent a owl:Class ;
+    rdfs:label "Building component"@en ;
+    rdfs:comment "A part that constitutes a piece of a building's structural makeup. E.g., Facade, Wall, Slab, RoofInner, etc."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:BuildingComponent ;
+            owl:onProperty core:hasPart ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass core:BuildingComponent ;
+            owl:onProperty core:isPartOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:BuildingComponent ;
+            owl:onProperty core:isPartOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Building ;
+            owl:onProperty core:componentOfBuilding ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass core:Building ;
+            owl:onProperty core:componentOfBuilding ] ;
+    o2o:endpoint "buildingcomponent" ;
+    o2o:included true .
+
+ns2: a owl:NamedIndividual,
+        owl:Thing ;
+    dcterms:title "SIOC Core Ontology Namespace"@en .
+
+core:Space a owl:Class ;
+    rdfs:label "Space"@en ;
+    rdfs:comment "A contiguous part of the physical world that has a 3D spatial extent and that contains or can contain sub-spaces. E.g., a Region can contain many pieces of Land, which in turn can contain many Buildings."@en ;
+    rdfs:seeAlso "https://schema.org/Place"^^xsd:anyURI ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:hasPart ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:isPartOf ] ;
+    o2o:endpoint "space" ;
+    o2o:included true .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource core:Room ;
+    owl:annotatedTarget core:BuildingComponent ;
+    owl:deprecated true .
+
+[] a v1:Offering ;
+    v1:description "VGhlIFNldmVuIE5vYWhpZGUgTGF3cw0KMS4gQmVsaWVmIGluIEctZA0KMi4gUmVzcGVjdCBHLWQgYW5kIHByYWlzZSBoaW0NCjMuIFJlc3BlY3QgaHVtYW4gbGlmZQ0KNC4gUmVzcGVjdCB0aGUgZmFtaWx5DQo1LiBSZXNwZWN0IGh1bWFuIGJlaW5ncw0KNi4gSGF2ZSBhIGp1ZGljaWFsIHN5c3RlbQ0KNy4gUmVzcGVjdCBhbGwgY3JlYXR1cmVz" .
+
+@prefix : <https://raw.githubusercontent.com/fdioguardi/pronto/main/ontology/pronto.owl#> .
+@prefix core: <https://w3id.org/rec/core/> .
+@prefix cpannotationschema: <http://www.ontologydesignpatterns.org/schemas/cpannotationschema.owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix ns: <http://creativecommons.org/ns#> .
+@prefix ns1: <https://raw.githubusercontent.com/jwackito/csv2pronto/main/ontology/pronto.owl#> .
+@prefix ns2: <http://rdfs.org/sioc/ns#> .
+@prefix o2o: <https://karlhammar.com/owl2oas/o2o.owl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix v1: <http://purl.org/goodrelations/v1#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns:license a owl:AnnotationProperty .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:date a owl:DatatypeProperty ;
+    rdfs:label "date"@en ;
+    rdfs:range xsd:dateTime .
+
+dc:description a owl:AnnotationProperty .
+
+dc:publisher a owl:AnnotationProperty .
+
+dc:rights a owl:AnnotationProperty .
+
+dc:subject a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+dcterms:license a owl:AnnotationProperty .
+
+dcterms:modified a owl:AnnotationProperty .
+
+dcterms:title a owl:DatatypeProperty ;
+    rdfs:label "title"@en .
+
+v1:Business rdfs:label "Business (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are themselves offering commercial services or products on the market. Usually, businesses are characterized by the fact that they are officially registered with the public administration and strive for profits by their activities."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:Enduser rdfs:label "Enduser (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are purchasing the good or service for private consumption, in particular not for resale or for usage within an industrial enterprise. By default, a Business Entity is an Enduser."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:LeaseOut a v1:BusinessFunction,
+        owl:NamedIndividual ;
+    rdfs:label "Lease Out (business function)"@en ;
+    rdfs:comment "This gr:BusinessFunction indicates that the gr:BusinessEntity offers (or seeks) the temporary right to use the specified gr:ProductOrService."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:PublicInstitution rdfs:label "Public institution (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are part of the adminstration or owned by the public."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:Reseller rdfs:label "Reseller (business entity type)"@en ;
+    rdfs:comment "The gr:BusinessEntityType representing such agents that are purchasing the scope of products included in the gr:Offering for resale on the market. Resellers are also businesses, i.e., they are officially registered with the public administration and strive for profits by their activities."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+v1:condition a owl:DatatypeProperty ;
+    rdfs:label "condition (0..1)"@en ;
+    rdfs:comment "A textual description of the condition of the product or service, or the products or services included in the offer (when attached to a gr:Offering)"@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range rdfs:Literal .
+
+v1:description a owl:DatatypeProperty ;
+    rdfs:label "description (0..1)"@en ;
+    rdfs:comment """A short textual description of the resource. 
+
+This property is semantically equivalent to rdfs:comment and just meant as a handy shortcut for marking up data."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range rdfs:Literal .
+
+v1:hasBusinessFunction a owl:ObjectProperty ;
+    rdfs:label "has business function (1..*)"@en ;
+    rdfs:comment """This specifies the business function of the gr:Offering, i.e. whether the gr:BusinessEntity is offering to sell, to lease, or to repair the particular type of product. In the case of bundles, it is also possible to attach individual business functions to each gr:TypeAndQuantityNode. The business function of the main gr:Offering determines the business function for all included objects or services, unless a business function attached to a gr:TypeAndQuantityNode overrides it.
+	
+Note: While it is possible that an entity is offering multiple types of business functions for the same set of objects (e.g. rental and sales), this should usually not be stated by attaching multiple business functions to the same gr:Offering, since the gr:UnitPriceSpecification for the varying business functions will typically be very different."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range v1:BusinessFunction .
+
+v1:hasCurrency a owl:DatatypeProperty ;
+    rdfs:label "has currency (1..1)"@en ;
+    rdfs:comment "The currency for all prices in the gr:PriceSpecification given using the ISO 4217 standard (3 characters)."@en ;
+    rdfs:domain v1:PriceSpecification ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+v1:hasPriceSpecification a owl:ObjectProperty ;
+    rdfs:label "has price specification (0..*)"@en ;
+    rdfs:comment """This links a gr:Offering to a gr:PriceSpecification or specifications. There can be unit price specifications, payment charge specifications, and delivery charge specifications. For each type, multiple specifications for the same gr:Offering are possible, e.g. for different quantity ranges or for different currencies, or for different combinations of gr:DeliveryMethod and target destinations.
+
+Recommended retail prices etc. can be marked by the gr:priceType property of the gr:UnitPriceSpecification."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range v1:PriceSpecification .
+
+v1:hasUnitOfMeasurement a owl:DatatypeProperty ;
+    rdfs:label "has unit of measurement (1..1)"@en ;
+    rdfs:comment "The unit of measurement for a gr:QuantitativeValue, a gr:UnitPriceSpecification, or a gr:TypeAndQuantityNode given using the UN/CEFACT Common Code (3 characters)."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+v1:hasValue a owl:DatatypeProperty ;
+    rdfs:label "has value (0..1)"@en ;
+    rdfs:comment "This subproperty specifies that the upper and lower limit of the given gr:QuantitativeValue are identical and have the respective value. It is a shortcut for such cases where a quantitative property is (at least practically) a single point value and not an interval."@en ;
+    rdfs:domain v1:QuantitativeValue ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:float ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+v1:priceType a owl:DatatypeProperty ;
+    rdfs:label "price type (0..1)"@en ;
+    rdfs:comment """This attribute can be used to distinguish multiple different price specifications for the same gr:Offering. It supersedes the former gr:isListPrice property. The following values are recommended:
+
+The absence of this property marks the actual sales price.
+
+SRP: "suggested retail price" - applicable for all sorts of a non-binding retail price recommendations, e.g. such published by the manufacturer or the distributor. This value replaces the former gr:isListPrice property.
+
+INVOICE: The invoice price, mostly used in the car industry - this is the price a dealer pays to the manufacturer, excluding rebates and charges."""@en ;
+    rdfs:domain v1:UnitPriceSpecification ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:range xsd:string .
+
+<http://purl.org/rss/1.0/modules/content/encoded> a owl:DatatypeProperty ;
+    rdfs:label "encoded"@en ;
+    rdfs:comment """An element whose contents are the entity-encoded or CDATA-escaped version of the content of the item. Example:
+
+<content:encoded><![CDATA[<p>What a <em>beautiful</em> day!</p>]]></content:encoded>"""@en ;
+    rdfs:range xsd:string .
+
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+ns2:Container a owl:Class ;
+    rdfs:label "Container"@en ;
+    rdfs:comment "An area in which content Items are contained."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:Item,
+        ns2:UserAccount .
+
+ns2:Site a owl:Class ;
+    rdfs:label "Site"@en ;
+    rdfs:comment "A Site can be the location of an online community or set of communities, with UserAccounts and Usergroups creating Items in a set of Containers. It can be thought of as a web-accessible data Space."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf ns2:Space .
+
+ns2:about a owl:ObjectProperty ;
+    rdfs:label "about"@en ;
+    rdfs:comment "Specifies that this Item is about a particular resource, e.g. a Post describing a book, hotel, etc."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:account_of a owl:ObjectProperty ;
+    rdfs:label "account of"@en ;
+    rdfs:comment "Refers to the foaf:Agent or foaf:Person who owns this sioc:UserAccount."@en ;
+    rdfs:domain ns2:UserAccount ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range foaf:Agent ;
+    owl:inverseOf foaf:account .
+
+ns2:content a owl:DatatypeProperty ;
+    rdfs:label "content"@en ;
+    rdfs:comment "The content of the Item in plain text format."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:creator_of a owl:ObjectProperty ;
+    rdfs:label "creator of"@en ;
+    rdfs:comment "A resource that the UserAccount is a creator of."@en ;
+    rdfs:domain ns2:UserAccount ;
+    rdfs:isDefinedBy ns2: ;
+    owl:inverseOf ns2:has_creator .
+
+ns2:embeds_knowledge a owl:ObjectProperty ;
+    rdfs:label "embeds knowledge"@en ;
+    rdfs:comment "This links Items to embedded statements, facts and structured content."@en ;
+    rdfs:domain ns2:Item ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:id a owl:DatatypeProperty ;
+    rdfs:label "id"@en ;
+    rdfs:comment "An identifier of a SIOC concept instance. For example, a user ID. Must be unique for instances of each type of SIOC concept within the same site."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:link a owl:ObjectProperty ;
+    rdfs:label "link"@en ;
+    rdfs:comment "A URI of a document which contains this SIOC object."@en ;
+    rdfs:isDefinedBy ns2: .
+
+ns2:name a owl:DatatypeProperty ;
+    rdfs:label "name"@en ;
+    rdfs:comment "The name of a SIOC concept instance, e.g. a username for a UserAccount, group name for a Usergroup, etc."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range rdfs:Literal .
+
+ns2:read_at a owl:DatatypeProperty ;
+    rdfs:label "read at"@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:range xsd:dateTime .
+
+ns2:related_to a owl:ObjectProperty ;
+    rdfs:label "related to"@en ;
+    rdfs:comment "Related resources for this resource, e.g. for Posts, perhaps determined implicitly from topics or references."@en ;
+    rdfs:isDefinedBy ns2: .
+
+<http://schema.org/Place> a owl:Class ;
+    rdfs:label "Place"@en .
+
+<http://schema.org/seller> a owl:ObjectProperty ;
+    rdfs:label "seller"@en ;
+    rdfs:comment "An entity which offers (sells / leases / lends / loans) the services / goods. A seller may also be a provider."@en ;
+    rdfs:range foaf:Agent .
+
+cpannotationschema:coversRequirements a owl:AnnotationProperty .
+
+owl:deprecated a owl:AnnotationProperty .
+
+foaf:homepage a owl:AnnotationProperty .
+
+foaf:made a owl:ObjectProperty ;
+    rdfs:label "made"@en ;
+    rdfs:comment "Something that was made by this agent."@en ;
+    rdfs:domain foaf:Agent ;
+    owl:inverseOf foaf:maker .
+
+o2o:endpoint a owl:AnnotationProperty .
+
+o2o:included a owl:AnnotationProperty .
+
+<https://raw.githubusercontent.com/fdioguardi/pronto/main/ontology/pronto.owl> a owl:Ontology ;
+    rdfs:label "Property Ontology"@en ;
+    ns:license <https://opensource.org/licenses/MIT> ;
+    dc:contributor "Diego Torres"^^xsd:string ;
+    dc:creator "Felipe Dioguardi"^^xsd:string ;
+    dc:description """This ontology covers multiple types of properties and buildings on the real estate market, and real estate listings from different sites that advertise them.
+
+It is mainly based on the RealEstateCore and Semantically-Interlinked Online Communities ontologies."""@en ;
+    dc:publisher "LIFIA"@en ;
+    vann:preferredNamespacePrefix "pr"@en ;
+    rdfs:comment "Pronto is a work-in-progress; requirements are rather unclear as of yet."@en ;
+    rdfs:seeAlso <http://rdfs.org/sioc/>,
+        <http://rdfs.org/sioc/spec>,
+        <http://sioc-project.org>,
+        <http://www.heppnetz.de/ontologies/goodrelations/v1>,
+        <https://realestatecore.io>,
+        <https://w3id.org/rec/>,
+        <https://xmlns.com/foaf/spec/> .
+
+:RealEstateListing a owl:Class ;
+    rdfs:label "Real Estate Listing"@en ;
+    rdfs:comment "A public advertisement of some real estate."@en ;
+    rdfs:subClassOf v1:Offering,
+        ns2:Post .
+
+:disposition a owl:DatatypeProperty ;
+    rdfs:label "disposition"@en ;
+    rdfs:comment "Cardinal point in which the property is facing."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:has_feature a owl:ObjectProperty ;
+    rdfs:domain core:Space ;
+    rdfs:range :Feature .
+
+:has_number_of_rooms a owl:DatatypeProperty ;
+    rdfs:label "has number of rooms"@en ;
+    rdfs:range xsd:int .
+
+:has_size_specification a owl:ObjectProperty ;
+    rdfs:label "has size specification (0..*)"@en ;
+    rdfs:comment """This links a rec:Space to a pr:SizeSpecification or specifications. Multiple specifications for the same rec:Space are possible, e.g. for different surfaces measured or for different units.
+
+The specific surface measured can be marked by the gr:sizeType property of the pr:SizeSpecification."""@en ;
+    rdfs:domain core:Space ;
+    rdfs:range :SizeSpecification .
+
+:has_value a owl:DatatypeProperty ;
+    rdfs:label "has value"@en ;
+    rdfs:domain :Feature ;
+    rdfs:range rdfs:Literal .
+
+:is_brand_new a owl:DatatypeProperty ;
+    rdfs:label "is brand new"@en ;
+    rdfs:comment "Whether the Building or Land has been inhabited before."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:is_finished a owl:DatatypeProperty ;
+    rdfs:label "is finished"@en ;
+    rdfs:comment "Whether the building process has been completed"@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:boolean ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:luminosity a owl:DatatypeProperty ;
+    rdfs:label "luminosity"@en ;
+    rdfs:comment "The brightness or luminosity of the property."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:orientation a owl:DatatypeProperty ;
+    rdfs:label "orientation"@en ;
+    rdfs:comment "Where the property is facing."@en ;
+    rdfs:domain core:Space ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:property_type a owl:DatatypeProperty ;
+    rdfs:label "property type"@en ;
+    rdfs:domain core:Space ;
+    rdfs:range xsd:string .
+
+:size_type a owl:DatatypeProperty ;
+    rdfs:label "size type (0..1)"@en ;
+    rdfs:comment "The type of surface measured by a SizeSpecification, e.g. \"Covered\", \"Total\"."@en ;
+    rdfs:domain :SizeSpecification ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+schema:address a owl:DatatypeProperty ;
+    rdfs:label "address"@en ;
+    rdfs:comment "Physical address of the item."@en ;
+    rdfs:domain core:Space .
+
+schema:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude"@en ;
+    rdfs:comment "The latitude of a location. For example 37.42242 (WGS 84)."@en ;
+    rdfs:range xsd:double ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+schema:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude"@en ;
+    rdfs:comment "The longitude of a location. For example -122.08585 (WGS 84)."@en ;
+    rdfs:range xsd:double ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+<https://w3id.org/rec/building/Toilet> a owl:Class ;
+    rdfs:subClassOf <https://w3id.org/rec/building/PersonalHygiene> .
+
+core:Land a owl:Class ;
+    rdfs:label "Land"@en ;
+    rdfs:comment "A piece of land upon which one or more buildings may be situated."@en ;
+    rdfs:subClassOf core:Space .
+
+core:SubBuilding a owl:Class ;
+    rdfs:label "Sub-building"@en ;
+    rdfs:comment "A part of a larger building complex, e.g., a wing, a tower, or an interconnected (through walkways or other means) but largely free-standing building."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:oneOf [ a rdf:List ;
+                            rdf:first "Tower" ;
+                            rdf:rest [ a rdf:List ;
+                                    rdf:first "Wing" ;
+                                    rdf:rest () ] ] ] ;
+            owl:onProperty core:type ],
+        core:Space .
+
+core:documentTopic a owl:ObjectProperty ;
+    rdfs:label "document topic"@en ;
+    rdfs:domain core:Document ;
+    owl:inverseOf core:hasDocument .
+
+core:hasCity a owl:DatatypeProperty ;
+    rdfs:label "has city"@en ;
+    rdfs:comment "Indicates a city that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasCountry a owl:DatatypeProperty ;
+    rdfs:label "has country"@en ;
+    rdfs:comment "Indicates a country that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasGeonamesId a owl:DatatypeProperty ;
+    rdfs:label "has geonames ID"@en ;
+    rdfs:comment """Linking to https://www.geonames.org
+
+E.g. for Stockholm (Sweden):
+LocationUUID#1 hasGenonames http://www.geonames.org/2673730/stockholm.html"""@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasPostalAddress a owl:DatatypeProperty ;
+    rdfs:label "has postal address"@en ;
+    rdfs:comment "Address used for postal delivery."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasRegion a owl:DatatypeProperty ;
+    rdfs:label "has region"@en ;
+    rdfs:comment "Indicates a region that a certain Geometry is part of."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasVistingAddress a owl:DatatypeProperty ;
+    rdfs:label "has visting address"@en ;
+    rdfs:comment "An address for visiting the Geometry. If a Geometry has multiple visiting addresses, then just add as many hasVistingAddress as needed."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:hasZipCode a owl:DatatypeProperty ;
+    rdfs:label "has zip code"@en ;
+    rdfs:comment "Indicates a certain Geometry's zip code."@en ;
+    rdfs:subPropertyOf core:hasLocationAttribute .
+
+core:isLocatedAtLocalCoordinates a owl:DatatypeProperty ;
+    rdfs:label "is located at local coordinates"@en ;
+    rdfs:comment "Expressed as a string adhering to the notation \"(x,y,z)\", where x, y, and z ar whole or decimal numbers indicating the position in the local building coordinate system, measured in meters. This relates to the outside world coordinate refence system via the values expressed by GeoReferenceOrigo."@en ;
+    rdfs:subPropertyOf geo:hasSerialization .
+
+core:isLocationOf a owl:ObjectProperty ;
+    rdfs:label "is location of"@en ;
+    rdfs:domain core:Space ;
+    owl:inverseOf core:locatedIn .
+
+v1:Sell a v1:BusinessFunction,
+        owl:NamedIndividual ;
+    rdfs:label "Sell (business function)"@en ;
+    rdfs:comment "This gr:BusinessFunction indicates that the gr:BusinessEntity offers to permanently transfer all property rights on the specified gr:ProductOrService."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+ns2:Post a owl:Class ;
+    rdfs:label "Post"@en ;
+    rdfs:comment "An article or message that can be posted to a Forum."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf ns2:Item,
+        foaf:Document .
+
+ns2:has_creator a owl:ObjectProperty ;
+    rdfs:label "has creator"@en ;
+    rdfs:comment "A resource that the UserAccount is a creator of."@en ;
+    rdfs:isDefinedBy ns2: .
+
+<http://rdfs.org/sioc/spec> rdfs:label "SIOC Core Ontology Specification" .
+
+foaf:Document a owl:Class .
+
+foaf:OnlineAccount a owl:Class ;
+    rdfs:label "OnlineAccount"@en .
+
+foaf:account a owl:ObjectProperty ;
+    rdfs:label "account"@en .
+
+foaf:maker a owl:ObjectProperty ;
+    rdfs:label "maker"@en ;
+    rdfs:comment "An agent that made this thing."@en ;
+    rdfs:range foaf:Agent .
+
+ns1:feature_Acceso%20a%20internet_True a ns1:Feature ;
+    rdfs:label "Acceso a internet: True"^^xsd:string ;
+    dc:title "Acceso a internet"^^xsd:string ;
+    ns1:has_value "true"^^xsd:string .
+
+ns1:feature_Ambientes_3 a ns1:Feature ;
+    rdfs:label "Ambientes: 3"^^xsd:string ;
+    dc:title "Ambientes"^^xsd:string ;
+    ns1:has_value "3"^^xsd:string .
+
+ns1:feature_Ba%C3%B1os_2 a ns1:Feature ;
+    rdfs:label "Baños: 2"^^xsd:string ;
+    dc:title "Baños"^^xsd:string ;
+    ns1:has_value "2"^^xsd:string .
+
+ns1:feature_Balc%C3%B3n_True a ns1:Feature ;
+    rdfs:label "Balcón: True"^^xsd:string ;
+    dc:title "Balcón"^^xsd:string ;
+    ns1:has_value "true"^^xsd:string .
+
+ns1:feature_Cantidad%20de%20pisos_5 a ns1:Feature ;
+    rdfs:label "Cantidad de pisos: 5"^^xsd:string ;
+    dc:title "Cantidad de pisos"^^xsd:string ;
+    ns1:has_value "5"^^xsd:string .
+
+ns1:feature_Cocheras_2 a ns1:Feature ;
+    rdfs:label "Cocheras: 2"^^xsd:string ;
+    dc:title "Cocheras"^^xsd:string ;
+    ns1:has_value "2"^^xsd:string .
+
+ns1:feature_Con%20tour%20virtual_False a ns1:Feature ;
+    rdfs:label "Con tour virtual: False"^^xsd:string ;
+    dc:title "Con tour virtual"^^xsd:string .
+
+ns1:feature_Disposici%C3%B3n_Frente a ns1:Feature ;
+    rdfs:label "Disposición: Frente"^^xsd:string ;
+    dc:title "Disposición"^^xsd:string ;
+    ns1:has_value "Frente"^^xsd:string .
+
+ns1:feature_Dormitorios_2 a ns1:Feature ;
+    rdfs:label "Dormitorios: 2"^^xsd:string ;
+    dc:title "Dormitorios"^^xsd:string ;
+    ns1:has_value "2"^^xsd:string .
+
+ns1:feature_Inmueble_Departamento a ns1:Feature ;
+    rdfs:label "Inmueble: Departamento"^^xsd:string ;
+    dc:title "Inmueble"^^xsd:string ;
+    ns1:has_value "Departamento"^^xsd:string .
+
+ns1:feature_Operaci%C3%B3n_Venta a ns1:Feature ;
+    rdfs:label "Operación: Venta"^^xsd:string ;
+    dc:title "Operación"^^xsd:string ;
+    ns1:has_value "Venta"^^xsd:string .
+
+ns1:feature_Orientaci%C3%B3n_Norte a ns1:Feature ;
+    rdfs:label "Orientación: Norte"^^xsd:string ;
+    dc:title "Orientación"^^xsd:string ;
+    ns1:has_value "Norte"^^xsd:string .
+
+ns1:feature_Subtipo%20de%20operaci%C3%B3n_Propiedad%20individual a ns1:Feature ;
+    rdfs:label "Subtipo de operación: Propiedad individual"^^xsd:string ;
+    dc:title "Subtipo de operación"^^xsd:string ;
+    ns1:has_value "Propiedad individual"^^xsd:string .
+
+ns1:feature_Superficie%20cubierta_121.73%20m%C2%B2 a ns1:Feature ;
+    rdfs:label "Superficie cubierta: 121.73 m²"^^xsd:string ;
+    dc:title "Superficie cubierta"^^xsd:string ;
+    ns1:has_value "121.73 m²"^^xsd:string .
+
+ns1:feature_Superficie%20total_121.73%20m%C2%B2 a ns1:Feature ;
+    rdfs:label "Superficie total: 121.73 m²"^^xsd:string ;
+    dc:title "Superficie total"^^xsd:string ;
+    ns1:has_value "121.73 m²"^^xsd:string .
+
+ns1:feature_Tipo%20de%20departamento_Departamento a ns1:Feature ;
+    rdfs:label "Tipo de departamento: Departamento"^^xsd:string ;
+    dc:title "Tipo de departamento"^^xsd:string ;
+    ns1:has_value "Departamento"^^xsd:string .
+
+ns1:neibourhood_Bs.As.%20G.B.A.%20Norte_Tigre_Nordelta a core:Region ;
+    rdfs:label "Nordelta"^^xsd:string ;
+    core:locatedIn ns1:district_Bs.As.%20G.B.A.%20Norte_Tigre,
+        ns1:province_Bs.As.%20G.B.A.%20Norte .
+
+ns1:site2 ns2:space_of ns1:listing_site2_A1533904546 .
+
+ns1:space_site2_A1533904546 a core:Space ;
+    ns1:hasSizeSpecification [ a ns1:SizeSpecification ;
+            v1:hasUnitOfMeasurement "m²"^^xsd:string ;
+            v1:hasValue "121.73"^^xsd:float ;
+            ns1:size_type "covered"^^xsd:string ],
+        [ a ns1:SizeSpecification ;
+            v1:hasUnitOfMeasurement "m²"^^xsd:string ;
+            v1:hasValue "121.73"^^xsd:float ;
+            ns1:size_type "total"^^xsd:string ] ;
+    ns1:has_amount_of_rooms 3 ;
+    ns1:has_feature ns1:feature_Acceso%20a%20internet_True,
+        ns1:feature_Ambientes_3,
+        ns1:feature_Ba%C3%B1os_2,
+        ns1:feature_Balc%C3%B3n_True,
+        ns1:feature_Cantidad%20de%20pisos_5,
+        ns1:feature_Cocheras_2,
+        ns1:feature_Con%20tour%20virtual_False,
+        ns1:feature_Disposici%C3%B3n_Frente,
+        ns1:feature_Dormitorios_2,
+        ns1:feature_Inmueble_Departamento,
+        ns1:feature_Operaci%C3%B3n_Venta,
+        ns1:feature_Orientaci%C3%B3n_Norte,
+        ns1:feature_Subtipo%20de%20operaci%C3%B3n_Propiedad%20individual,
+        ns1:feature_Superficie%20cubierta_121.73%20m%C2%B2,
+        ns1:feature_Superficie%20total_121.73%20m%C2%B2,
+        ns1:feature_Tipo%20de%20departamento_Departamento ;
+    ns1:orientation "Norte"^^xsd:string ;
+    ns1:property_type "Departamento"^^xsd:string ;
+    schema:address "Oceana Nordelta 100"^^xsd:string ;
+    schema:latitude -3.442541e+01 ;
+    schema:longitude -5.863081e+01 ;
+    core:hasPart ns1:space_site2_A1533904546_bath_0,
+        ns1:space_site2_A1533904546_bath_1,
+        ns1:space_site2_A1533904546_bed_0,
+        ns1:space_site2_A1533904546_bed_1,
+        ns1:space_site2_A1533904546_garage_0,
+        ns1:space_site2_A1533904546_garage_1 ;
+    core:locatedIn ns1:district_Bs.As.%20G.B.A.%20Norte_Tigre,
+        ns1:neibourhood_Bs.As.%20G.B.A.%20Norte_Tigre_Nordelta,
+        ns1:province_Bs.As.%20G.B.A.%20Norte . 
+
+ns1:space_site2_A1533904546 owl:sameAs ns1:space_site3_49766448 .
+
+ns1:space_site2_A1533904546_bath_0 a <https://w3id.org/rec/building/Bathroom> .
+
+ns1:space_site2_A1533904546_bath_1 a <https://w3id.org/rec/building/Bathroom> .
+
+ns1:space_site2_A1533904546_bed_0 a <https://w3id.org/rec/building/Bedroom> .
+
+ns1:space_site2_A1533904546_bed_1 a <https://w3id.org/rec/building/Bedroom> .
+
+ns1:space_site2_A1533904546_garage_0 a <https://w3id.org/rec/building/Garage> .
+
+ns1:space_site2_A1533904546_garage_1 a <https://w3id.org/rec/building/Garage> .
+
+<https://w3id.org/rec/building/PersonalHygiene> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+core:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "The human, group, or machine that consumes or acts upon an object or data. This higher-level grouping allows properties that are shared among its subclasses (Person, Organization, Company, Department...) to be anchored in one joint place, on the Agent class."@en ;
+    o2o:endpoint "agent" ;
+    o2o:included true .
+
+core:RealEstate a owl:Class ;
+    rdfs:label "Real estate"@en ;
+    rdfs:comment "The legal/administrative representation of some lands and/or buildings."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty core:includes ;
+            owl:someValuesFrom core:Space ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:includes ],
+        core:SpaceCollection ;
+    o2o:endpoint "realestate" ;
+    o2o:included true .
+
+core:SpaceCollection a owl:Class ;
+    rdfs:label "Space collection"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:includes ],
+        [ a owl:Restriction ;
+            owl:onProperty core:includes ;
+            owl:someValuesFrom core:Space ],
+        core:Collection .
+
+core:componentOf a owl:ObjectProperty ;
+    rdfs:label "component of"@en ;
+    rdfs:comment "Links a Building Component to a Space, that the Building Component is either contained in, adjacent to or intersecting with."@en ;
+    rdfs:domain core:BuildingComponent ;
+    rdfs:range core:Space ;
+    owl:inverseOf core:hasBuildingComponent .
+
+core:hasBuildingComponent a owl:ObjectProperty ;
+    rdfs:label "has building component"@en ;
+    rdfs:comment "Links a Space to a BuildingComponent that is either contained in, adjacent to or intersecting with the Space."@en ;
+    rdfs:domain core:Space ;
+    rdfs:range core:BuildingComponent .
+
+core:locatedIn a owl:ObjectProperty ;
+    rdfs:label "located in"@en ;
+    rdfs:range core:Space .
+
+core:type a owl:DatatypeProperty ;
+    rdfs:label "type"@en ;
+    rdfs:range xsd:string .
+
+v1:QuantitativeValue a owl:Class ;
+    rdfs:label "Quantitative value"@en ;
+    rdfs:comment """A quantitative value is a numerical interval that represents the range of a certain gr:quantitativeProductOrServiceProperty in terms of the lower and upper bounds for a particular gr:ProductOrService. It is to be interpreted in combination with the respective unit of measurement. Most quantitative values are intervals even if they are in practice often treated as a single point value.
+
+Example: a weight between 10 and 25 kilogramms, a length between 10 and 15 milimeters.
+
+Compatibility with schema.org: This class is equivalent to http://schema.org/Quantity."""@en .
+
+v1:UnitPriceSpecification a owl:Class ;
+    rdfs:label "Unit price specification"@en ;
+    rdfs:comment """A unit price specification is a conceptual entity that specifies the price asked for a given gr:Offering by the respective gr:Business Entity. An offering may be linked to multiple unit price specifications that specify alternative prices for non-overlapping sets of conditions (e.g. quantities or sales regions) or with differing validity periods. 
+
+A unit price specification is characterized by (1) the lower and upper limits and the unit of measurement of the eligible quantity, (2) by a monetary amount per unit of the product or service, and (3)  whether this prices includes local sales taxes, namely VAT.
+	
+Example: The price, including VAT, for 1 kg of a given material is 5 Euros per kg for 0 - 5 kg and 4 Euros for quantities above 5 kg.
+
+The eligible quantity interval for a given price is specified using the object property gr:hasEligibleQuantity, which points to an instance of gr:QuantitativeValue. The currency is specified using the gr:hasCurrency property, which points to an ISO 4217 currency code. The unit of measurement for the eligible quantity is specified using the gr:hasUnitOfMeasurement datatype property, which points to an UN/CEFACT Common Code (3 characters).
+	
+In most cases, the appropriate unit of measurement is the UN/CEFACT Common Code "C62" for "Unit or piece", since a gr:Offering is defined by the quantity and unit of measurement of all items included (e.g. "1 kg of bananas plus a 2 kg of apples"). As long at the offering consists of only one item, it is also possible to use an unit of measurement of choice for specifying the price per unit. For bundles, however, only  "C62" for "Unit or piece" is a valid unit of measurement.
+
+You can assume that the price is given per unit or piece if there is no gr:hasUnitOfMeasurement property attached to the price.
+	
+Whether VAT and sales taxes are included in this price is specified using the property gr:valueAddedTaxIncluded (xsd:boolean).
+	
+The price per unit of measurement is specified as a float value of the gr:hasCurrencyValue property. The currency is specified via the gr:hasCurrency datatype property. Whether the price includes VAT or not is indicated by the gr:valueAddedTaxIncluded datatype property.
+
+The property priceType can be used to indicate that the price is a retail price recommendation only (i.e. a list price). 
+
+If the price can only be given as a range, use gr:hasMaxCurrencyValue and gr:hasMinCurrencyValue for the upper and lower bounds.
+
+Important: When querying for the price, always use gr:hasMaxCurrencyValue and gr:hasMinCurrencyValue.
+
+Note 1: Due to the complexity of pricing scenarios in various industries, it may be necessary to create extensions of this fundamental model of price specifications. Such can be done easily by importing and refining the GoodRelations ontology.
+
+Note 2: For Google, attaching a gr:validThrough statement to a gr:UnitPriceSpecification is mandatory. 
+"""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    rdfs:subClassOf v1:PriceSpecification .
+
+ns2:Space a owl:Class ;
+    rdfs:label "Space"@en ;
+    rdfs:comment "A Space is a place where data resides, e.g. on a website, desktop, fileshare, etc."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:UserAccount .
+
+geo:hasSerialization a owl:DatatypeProperty ;
+    rdfs:label "has serialization"@en ;
+    rdfs:comment """Connects a geometry object with its text-based serialization.
+
+GeoSPARQL is Copyright (c) 2012 Open Geospatial Consortium, Inc. All Rights Reserved. http://www.opengeospatial.org/ogc/document."""@en ;
+    rdfs:isDefinedBy geo: ;
+    rdfs:range rdfs:Literal .
+
+:Feature a owl:Class ;
+    rdfs:label "Feature"@en .
+
+:SizeSpecification a owl:Class ;
+    rdfs:label "Size specification"@en ;
+    rdfs:comment "A unit price specification is a conceptual entity that specifies the size of a given rec:Space. A space may be linked to multiple size specifications that specify alternative sizes for different types of measurements (e.g. total or covered surface)."@en ;
+    rdfs:subClassOf v1:QuantitativeValue .
+
+ns1:account_site2_706487080 a ns2:UserAccount ;
+    ns2:account_of ns1:agent_Olhaus%20Grupo%20Inmobiliario%20Olhaus%20Grupo%20Inmobiliario ;
+    ns2:creator_of ns1:listing_site2_A1533904546 ;
+    ns2:id "706487080"^^xsd:string ;
+    ns2:name "Olhaus Grupo Inmobiliario Olhaus Grupo Inmobiliario"^^xsd:string .
+
+ns1:district_Bs.As.%20G.B.A.%20Norte_Tigre a core:Region ;
+    rdfs:label "Tigre"^^xsd:string ;
+    core:locatedIn ns1:province_Bs.As.%20G.B.A.%20Norte .
+
+ns1:real_estate_site2_A1533904546 a core:RealEstate ;
+    ns1:managed_by ns1:agent_Olhaus%20Grupo%20Inmobiliario%20Olhaus%20Grupo%20Inmobiliario ;
+    core:includes ns1:space_site2_A1533904546 .
+
+<https://w3id.org/rec/building/Bathroom> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+<https://w3id.org/rec/building/Bedroom> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+<https://w3id.org/rec/building/Garage> a owl:Class ;
+    rdfs:subClassOf core:Room .
+
+core:componentOfBuilding a owl:ObjectProperty ;
+    rdfs:label "component of building"@en ;
+    rdfs:comment "Indicates which Building a certain Building Component is part of."@en ;
+    rdfs:domain core:BuildingComponent ;
+    rdfs:range core:Building ;
+    rdfs:subPropertyOf core:componentOf .
+
+core:hasPart a owl:ObjectProperty ;
+    rdfs:label "has part"@en ;
+    rdfs:comment "Points to sub-entities that share the same base type (i.e., Spaces only have Spaces as parts, Assets only have Assets as parts, etc.)."@en ;
+    owl:inverseOf core:isPartOf .
+
+v1:BusinessFunction a owl:Class ;
+    rdfs:label "Business function"@en ;
+    rdfs:comment """The business function specifies the type of activity or access (i.e., the bundle of rights) offered by the gr:BusinessEntity on the gr:ProductOrService through the gr:Offering. Typical are sell, rental or lease, maintenance or repair, manufacture / produce, recycle / dispose, engineering / construction, or installation.
+
+Licenses and other proprietary specifications of access rights are also instances of this class.
+
+Examples: A particular offering made by Miller Rentals Ltd. says that they (1) sell Volkswagen Golf convertibles, (2) lease out a particular Ford pick-up truck, and (3) dispose car wrecks of any make and model."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    owl:disjointWith v1:Offering,
+        v1:PriceSpecification .
+
+v1:Offering a owl:Class ;
+    rdfs:label "Offering"@en ;
+    rdfs:comment """An offering represents the public, not necessarily binding, not necessarily exclusive, announcement by a gr:BusinessEntity to provide (or seek) a certain gr:BusinessFunction for a certain gr:ProductOrService to a specified target audience. An offering is specified by the type of product or service or bundle it refers to, what business function is being offered (sales, rental, ...), and a set of commercial properties. It can either refer to 
+(1) a clearly specified instance (gr:Individual),
+(2) to a set of anonymous instances of a given type (gr:SomeItems),
+(3) a product model specification (gr:ProductOrServiceModel), see also section 3.3.3 of the GoodRelations Technical Report. 
+
+An offering may be constrained in terms of the eligible type of business partner, countries, quantities, and other commercial properties. The definition of the commercial properties, the type of product offered, and the business function are explained in other parts of this vocabulary in more detail.
+
+Example: Peter Miller offers to repair TV sets made by Siemens, Volkswagen Innsbruck sells a particular instance of a Volkswagen Golf at $10,000.
+
+Compatibility with schema.org: This class is a superclass to http://schema.org/Offer, since gr:Offering can also represent demand."""@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> ;
+    owl:disjointWith v1:PriceSpecification .
+
+ns1:agent_Olhaus%20Grupo%20Inmobiliario%20Olhaus%20Grupo%20Inmobiliario a foaf:Agent ;
+    foaf:account ns1:account_site2_706487080 ;
+    foaf:made ns1:listing_site2_A1533904546 ;
+    ns1:manages ns1:real_estate_site2_A1533904546 .
+
+ns1:listing_site2_A1533904546 a ns1:RealEstateListing ;
+    rdfs:label "Venta Departamento Ocena Nordelta"^^xsd:string ;
+    dc:date "2023-10-11T00:00:00"^^xsd:dateTime ;
+    v1:hasBuisnessFunction v1:Sell ;
+    v1:hasPriceSpecification [ a v1:UnitPriceSpecification ;
+            v1:hasCurrency "USD"^^xsd:string ;
+            v1:hasCurrencyValue "745995.0"^^xsd:float ;
+            v1:priceType "BASE"^^xsd:string ] ;
+    ns2:about ns1:real_estate_site2_A1533904546 ;
+    ns2:has_creator ns1:account_site2_706487080 ;
+    ns2:has_space ns1:site2 ;
+    ns2:id "A1533904546"^^xsd:string ;
+    ns2:read_at "2024-02-02T00:00:00"^^xsd:dateTime ;
+    rdfs:comment """EL VALOR PUBLICADO ES EN DOLARES. Oceana Nordelta, unidad de 3 ambientes en el 5to piso A509 donde encontramos gran Master suite, suite jr, playroom, toilette, balcón terraza, y balcón con parrilla, 2 cochera y baulera. Lugares de estar apaisados, con doble visual: sol de la mañana y atardecer sobre el lago. Equipamiento y muebles de diseño contemporáneo. Tecnología y bajo consumo.
+Materiales solo de primera calidad. Dormitorios que guardan clara independencia entre ellos y respecto de las áreas sociales.
+Ambientes que respiran, ventilación cruzada. Espacios que se continúan en terrazas exteriores. Patios abiertos con parrillas hacia el este anexos a las cocinas. Galerías sobre el jardín y el lago.
+Una idea de confort que se extiende más allá del propio hábitat.
+FECHA DE ENTREGA FEBRERO 2025.
+
+
+Donde esta ubicado Oceana?
+En el cruce exacto entre paisajes. A orillas del gran lago central con una perfecta armonía entre naturaleza y paisaje hacen de esta belleza un lugar para vivir. Muelle privado y mirador hacia la laguna, salas de reuniones independientes en planta baja, pileta climatizada cubierta, gimnasio con aparatos de ultima generación, salón de relax, yoga y spa. Lounges y salas de ensayo, piletas y solarium exterior, senderos peatonales rodeando la laguna, energía de emergencia disponible para cada unidad desde grupo electrógeno central. Certificación sustentable, terrazas, jardines privados con parrilla y vista a la laguna. Unidades pasantes con vista este/ oeste. Pent houses y unidades tipo en los extremos del edificio con amplias terrazas semi cubiertas.
+Allí donde la naturaleza y el aire puro se encuentran con la más alta calidad de servicios urbanos dominando el centro de la escena en una ciudad reconocida como pionera y líder en su tipo. Desde su lanzamiento en 1.999, Nordelta muestra un crecimiento indetenible y a la vez inteligente por la combinación del buen gusto, sus atractivos y la naturaleza, que con el desarrollo de Oceana logra el equilibrio perfecto de confort y bienestar. Imponente y sutil reconoce la valoración del espacio y la privacidad ofreciendo unidades de dos, tres, cuatro y cinco ambientes con exquisitos detalles de terminación. Su ubicación privilegiada, a solo 30 km de la Capital Federal y con dos rápidas vías de acceso,
+
+
+Martillero y Corredor Inmobiliario: 
+Maria S Vilariño CMCPSI 6726 
+Todas las propiedades son tasadas y bajo normas establecidas en la ley publicamos las propiedades para su comercialización.
+La intermediación y la conclusión de las operaciones son actividades exclusivas de este matriculado.\r...........
+Todas las propiedades son tasadas bajo normas establecidas en la Ley.
+La intermediación y la conclusión de las operaciones son actividades exclusivas de estos matriculados."""^^xsd:string ;
+    foaf:maker ns1:agent_Olhaus%20Grupo%20Inmobiliario%20Olhaus%20Grupo%20Inmobiliario .
+
+ns1:province_Bs.As.%20G.B.A.%20Norte a core:Region ;
+    rdfs:label "Bs.As. G.B.A. Norte"^^xsd:string .
+
+core:Building a owl:Class ;
+    rdfs:label "Building"@en ;
+    rdfs:comment "A confined building structure."@en ;
+    rdfs:subClassOf core:Space .
+
+core:Region a owl:Class ;
+    rdfs:label "Region"@en ;
+    rdfs:comment "An administrative geospatial unit larger than the individual real estate. For instance, \"Lombary\", \"North America\", \"The Back Bay\", \"Elnätsområde Syd\", etc."@en ;
+    rdfs:subClassOf core:Space .
+
+core:hasDocument a owl:ObjectProperty ;
+    rdfs:label "has document"@en ;
+    rdfs:range core:Document .
+
+core:includedIn a owl:ObjectProperty ;
+    rdfs:label "included in"@en ;
+    rdfs:comment "Indicates that an entity is included in some Collection, e.g., a Building is included in a RealEstate, or a Room is included in an Apartment."@en ;
+    rdfs:range core:Collection ;
+    owl:inverseOf core:includes .
+
+core:isPartOf a owl:ObjectProperty ;
+    rdfs:label "is part of"@en ;
+    rdfs:comment "Indicates a super-entity of the same base type (i.e., Spaces only have Spaces as parents, Organizations only have Organizations, etc)."@en .
+
+v1:PriceSpecification a owl:Class ;
+    rdfs:label "Price specification"@en ;
+    rdfs:comment "The superclass of all price specifications."@en ;
+    rdfs:isDefinedBy <http://purl.org/goodrelations/v1> .
+
+ns2:Item a owl:Class ;
+    rdfs:label "Item"@en ;
+    rdfs:comment "An Item is something which can be in a Container."@en ;
+    rdfs:isDefinedBy ns2: ;
+    owl:disjointWith ns2:Space,
+        ns2:UserAccount .
+
+foaf:Agent a owl:Class ;
+    owl:equivalentClass core:Agent .
+
+core:Document a owl:Class ;
+    rdfs:label "Document"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ] ;
+    o2o:endpoint "document" ;
+    o2o:included true .
+
+core:Room a owl:Class ;
+    rdfs:label "Room"@en ;
+    rdfs:comment "Base class for all more specific room types."@en ;
+    rdfs:subClassOf core:BuildingComponent,
+        core:Space ;
+    o2o:endpoint "room" ;
+    o2o:included true .
+
+core:includes a owl:ObjectProperty ;
+    rdfs:label "includes"@en ;
+    rdfs:comment "Member entities of a collection; e.g., a Campus includes some Space, an Apartment includes some Room, etc."@en ;
+    rdfs:domain core:Collection .
+
+ns2:UserAccount a owl:Class ;
+    rdfs:label "User Account"@en ;
+    rdfs:comment "A user account in an online community site."@en ;
+    rdfs:isDefinedBy ns2: ;
+    rdfs:subClassOf foaf:OnlineAccount .
+
+core:Collection a owl:Class ;
+    rdfs:label "Collection"@en ;
+    rdfs:comment "An administrative grouping of entities that are adressed and treated as a unit for some purpose. These entities may have some spatial arrangement (e.g., an apartment is typically contiguous) but that is not a requirement (see, e.g., a distributed campus consisting of spatially disjoint plots or buildings)."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ] ;
+    o2o:endpoint "collection" ;
+    o2o:included true .
+
+core:hasLocationAttribute a owl:DatatypeProperty ;
+    rdfs:label "has location attribute"@en ;
+    rdfs:comment "This property is a cognitive clustering for human consumption, grouping sub-properties that assign labels (e.g., place names, addresses, etc.) to Geometry entities. This branch of the property hierarchy may need some further development and cleaning up in future versions."@en ;
+    rdfs:subPropertyOf geo:hasSerialization .
+
+core:BuildingComponent a owl:Class ;
+    rdfs:label "Building component"@en ;
+    rdfs:comment "A part that constitutes a piece of a building's structural makeup. E.g., Facade, Wall, Slab, RoofInner, etc."@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:BuildingComponent ;
+            owl:onProperty core:hasPart ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass core:BuildingComponent ;
+            owl:onProperty core:isPartOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:BuildingComponent ;
+            owl:onProperty core:isPartOf ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Building ;
+            owl:onProperty core:componentOfBuilding ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass core:Building ;
+            owl:onProperty core:componentOfBuilding ] ;
+    o2o:endpoint "buildingcomponent" ;
+    o2o:included true .
+
+ns2: a owl:NamedIndividual,
+        owl:Thing ;
+    dcterms:title "SIOC Core Ontology Namespace"@en .
+
+core:Space a owl:Class ;
+    rdfs:label "Space"@en ;
+    rdfs:comment "A contiguous part of the physical world that has a 3D spatial extent and that contains or can contain sub-spaces. E.g., a Region can contain many pieces of Land, which in turn can contain many Buildings."@en ;
+    rdfs:seeAlso "https://schema.org/Place"^^xsd:anyURI ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:hasPart ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Collection ;
+            owl:onProperty core:includedIn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Document ;
+            owl:onProperty core:hasDocument ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom core:Space ;
+            owl:onProperty core:isPartOf ] ;
+    o2o:endpoint "space" ;
+    o2o:included true .
+
+[] a owl:Axiom ;
+    owl:annotatedProperty rdfs:subClassOf ;
+    owl:annotatedSource core:Room ;
+    owl:annotatedTarget core:BuildingComponent ;
+    owl:deprecated true .
+
+[] a v1:Offering ;
+    v1:description "VGhlIFNldmVuIE5vYWhpZGUgTGF3cw0KMS4gQmVsaWVmIGluIEctZA0KMi4gUmVzcGVjdCBHLWQgYW5kIHByYWlzZSBoaW0NCjMuIFJlc3BlY3QgaHVtYW4gbGlmZQ0KNC4gUmVzcGVjdCB0aGUgZmFtaWx5DQo1LiBSZXNwZWN0IGh1bWFuIGJlaW5ncw0KNi4gSGF2ZSBhIGp1ZGljaWFsIHN5c3RlbQ0KNy4gUmVzcGVjdCBhbGwgY3JlYXR1cmVz" .
+
