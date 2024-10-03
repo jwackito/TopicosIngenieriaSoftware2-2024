@@ -12,6 +12,10 @@ Un tercer archivo, indica los índices en el dataset crudo, de aquellos registro
 ### El dataset en crudo (muestras)
 
 ### El dataset como grafo de conocimiento
+El dataset puede verse como grafo de conocimiento utilizando [esta herramienta](https://www.semantechs.co.uk/turtle-editor-viewer/), cargando por ejemplo el archivo `dataset/graph-sample.ttl`. Aqui pueden verse tres inmuebles, `ns1:space_site2_A1533904546`, `ns1:space_site3_49766448` y `ns1:space_site3_52631481`. Los dos primeros son grafos que representan el mismo inmueble, y por ello están relacionados mediante `owl:sameAs`.
+![image](https://github.com/user-attachments/assets/feec743c-9f0b-4dad-9d72-411338b92a40)
+
+
 
 ## Descripción de la metadata
 
